@@ -107,8 +107,8 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('/datapengajuan')->name('datapengajuan.')->group(function()
     {
         Route::get('/', [DataAjuanMahasiswaController::class, 'index'])->name('index');
-        Route::get('/show', [DataAjuanMahasiswaController::class, 'show'])->name('show');
         Route::put('/update/{id}', [DataAjuanMahasiswaController::class, 'update'])->name('update');
+        Route::put('admin/update/{id}', [DataAjuanMahasiswaController::class, 'store'])->name('store');
         Route::delete('/delete/{id}', [DataAjuanMahasiswaController::class, 'delete'])->name('delete');
     });
 

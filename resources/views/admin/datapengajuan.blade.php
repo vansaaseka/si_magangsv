@@ -62,24 +62,63 @@
                                                 data-target="#editModal{{ $data->id }}">Perbaikan
                                                 Proposal</button>
                                         @elseif ($data->status === 'proses validasi')
-                                            <button class="badge badge-warning border-0 text-dark">Proses Validasi
+                                            <button class="badge badge-warning border-0 text-dark" data-toggle="modal"
+                                                data-id="{{ $data->id }}"
+                                                data-target="#modalUnduh{{ $data->id }}">Proses Validasi
                                                 Pimpinan
                                                 SV</button>
+                                        @elseif ($data->status === 'siap download')
+                                            <button class="badge badge-success border-0 text-light">Siap Download</button>
                                         @endif
                                     </td>
                                     <td>
                                         <button class="btn btn-primary btn-sm edit-btn" data-toggle="modal"
-                                            data-target="#revisiModal{{ $data->id }}" data-id="{{ $data->id }}"><i
-                                                class="fas fa-sm fa-edit "></i></button>
+                                            data-target="#UploadFileModal{{ $data->id }}"
+                                            data-id="{{ $data->id }}"><i class="fas fa-sm fa-edit "></i></button>
                                         <button class="btn btn-info btn-sm"><i
                                                 class="fas fa-info-circle fa-sm"></i></button>
                                         <!-- Edit Modal -->
-                                        <div class="modal fade" id="editModal{{ $data->id }}" tabindex="-1"
+                                        <div class="modal fade" id="UploadFileModal{{ $data->id }}" tabindex="-1"
                                             role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
                                             <div class="modal-dialog" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="editModalLabel">Modal Status</h5>
+                                                        <h5 class="modal-title" id="editModalLabel"></h5>
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form id="editForm"
+                                                            action="{{ route('datapengajuan.store', ['id' => $data->id]) }}"
+                                                            method="POST" enctype="multipart/form-data">
+                                                            @csrf
+                                                            @method('PUT')
+                                                            <div class="form-group">
+                                                                <label for="">Surat Pengantar</label>
+                                                                <input type="file" class="form-control"
+                                                                    name="surat_pengantar" accept=".pdf" required>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="">Proposal Mahasiswa</label>
+                                                                <input type="file" class="form-control" accept=".pdf"
+                                                                    name="nama_file" required>
+                                                            </div>
+                                                            <button type="submit"
+                                                                class="btn btn-primary btn-sm float-end">Submit</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Modal Unduh  -->
+                                        <div class="modal fade" id="modalUnduh{{ $data->id }}" tabindex="-1"
+                                            role="dialog" aria-labelledby="modalUnduh" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="modalUnduh">Modal Siap Download</h5>
                                                         <button type="button" class="close" data-dismiss="modal"
                                                             aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
@@ -93,15 +132,10 @@
                                                             @method('PUT')
                                                             <div class="form-group form checkbox-wrapper">
                                                                 <input type="radio" class="form-"
-                                                                    id="prosesValidasi{{ $data->id }}" name="status[]"
-                                                                    value="proses validasi">
-                                                                <label for="prosesValidasi{{ $data->id }}">Siap
-                                                                    diDownload</label>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="">Komentar Status</label>
-                                                                <input type="text" class="form-control"
-                                                                    name="komentar_status" required>
+                                                                    id="siapDownload{{ $data->id }}" name="status[]"
+                                                                    value="siap download">
+                                                                <label for="siapDownload{{ $data->id }}">Siap
+                                                                    Download</label>
                                                             </div>
                                                             <button type="submit"
                                                                 class="btn btn-primary btn-sm float-end">Submit</button>

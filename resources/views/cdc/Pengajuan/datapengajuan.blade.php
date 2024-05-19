@@ -63,6 +63,8 @@
                                             <button class="badge badge-warning border-0 text-dark">Proses Validasi
                                                 Pimpinan
                                                 SV</button>
+                                        @elseif ($data->status === 'siap download')
+                                            <button class="badge badge-success border-0 text-light">Siap Download</button>
                                         @endif
                                     </td>
                                     <td>

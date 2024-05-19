@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\AjuanMagang;
 use App\Models\Anggota;
+use App\Models\Proposal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class DataAjuanMahasiswaController extends Controller
 {
@@ -26,7 +29,8 @@ class DataAjuanMahasiswaController extends Controller
             return view('cdc.Pengajuan.datapengajuan', compact('dataajuan', 'activePage'));
 
         }elseif (Auth::user()->role_id == '3') {
-            $dataajuan = AjuanMagang::where('status', 'proses validasi')->get();
+            $dataajuan = AjuanMagang::whereIn('status', ['proses validasi', 'siap download'])->get();
+
             $activePage = 'pengajuan';
 
             $anggotas = collect();
@@ -49,19 +53,6 @@ class DataAjuanMahasiswaController extends Controller
     }
 
 
-    public function show($id)
-{
-    // Get the ajuan magang record
-    $ajuanMagang = AjuanMagang::find($id);
-
-    // Decode the anggota_id array
-    $anggotaIds = json_decode($ajuanMagang->anggota_id, true);
-
-    // Get the anggota data based on the anggota_id array
-    $anggotas = Anggota::whereIn('id', $anggotaIds)->get();
-
-    return response()->json($anggotas);
-}
 
     public function update(Request $request, $id)
     {
@@ -72,16 +63,13 @@ class DataAjuanMahasiswaController extends Controller
 
         $dataajuan = AjuanMagang::findOrFail($id);
 
-        // Update jenis ajuan
         $dataajuan->update(['jenis_ajuan' => 'jenis_perbaikan']);
 
-        // Cek apakah ada file proposal yang diunggah
         if ($request->hasFile('nama_file')) {
             $file = $request->file('nama_file');
             $filename = time() . '_' . $file->getClientOriginalName();
             $file->storeAs('public/proposal', $filename);
 
-            // Hapus file proposal lama dari sistem penyimpanan
             if (!empty($dataajuan->proposals->nama_file)) {
                 $oldProposalPath = public_path('storage/proposal/' . $dataajuan->proposals->nama_file);
                 if (file_exists($oldProposalPath)) {
@@ -89,7 +77,6 @@ class DataAjuanMahasiswaController extends Controller
                 }
             }
 
-            // Update nama file proposal baru
             $dataajuan->proposals()->update(['nama_file' => $filename]);
         }
 
@@ -111,29 +98,88 @@ class DataAjuanMahasiswaController extends Controller
             $dataajuan->update(['status' => 'perbaikan proposal']);
         }
 
-        // Menyimpan komentar status
         $dataajuan->komentar_status = $komentarStatus;
         $dataajuan->save();
+
+        return redirect()->back()->with('success', 'Status pengajuan berhasil diperbarui.');
+    } else if(Auth::user()->role_id == '3') {
+        $dataajuan = AjuanMagang::findOrFail($id);
+        $request->validate([
+            'status' => 'required|array',
+        ]);
+
+        $status = $request->input('status');
+        $dataajuan->update(['status' => 'siap download']);
 
         return redirect()->back()->with('success', 'Status pengajuan berhasil diperbarui.');
     }
     }
 
 
+    public function store(Request $request, $id)
+    {
+        if (Auth::user()->role_id == '3') {
+            $request->validate([
+                'nama_file' => 'required|file',
+                'surat_pengantar' => 'required|file',
+            ]);
+
+            DB::transaction(function () use ($request, $id) {
+                // Ambil data proposal
+                $proposal = Proposal::findOrFail($id);
+
+                // Simpan file nama_file
+                if ($request->hasFile('nama_file')) {
+                    $file = $request->file('nama_file');
+                    $filename = time() . '_' . $file->getClientOriginalName();
+                    $file->storeAs('public/proposal', $filename);
+
+                    // Hapus file lama jika ada
+                    if ($proposal->nama_file) {
+                        Storage::delete('public/proposal/' . $proposal->nama_file);
+                    }
+
+                    $proposal->nama_file = $filename;
+                }
+
+                // Simpan file surat_pengantar
+                if ($request->hasFile('surat_pengantar')) {
+                    $file = $request->file('surat_pengantar');
+                    $filename = time() . '_' . $file->getClientOriginalName();
+                    $file->storeAs('public/surat_pengantar', $filename);
+                    $ajuan = AjuanMagang::where('proposal_id', $proposal->id)->firstOrFail();
+
+                    // Hapus file lama jika ada
+                    if ($ajuan->surat_pengantar) {
+                        Storage::delete('public/surat_pengantar/' . $ajuan->surat_pengantar);
+                    }
+
+                    $ajuan->surat_pengantar = $filename;
+                    $ajuan->save();
+                }
+
+                $proposal->save();
+            });
+
+            return redirect()->back()->with('success', 'Data berhasil diupdate.');
+        }
+
+        return redirect()->back()->with('error', 'Anda tidak memiliki izin untuk melakukan aksi ini.');
+    }
+
+
+
     public function delete(Request $request, $id)
     {
         $dataajuan = AjuanMagang::findOrFail($id);
 
-        // Hapus file proposal dari sistem penyimpanan
         $proposalPath = public_path('storage/proposal/' . $dataajuan->proposals->nama_file);
         if (file_exists($proposalPath)) {
-            unlink($proposalPath); // Hapus file dari sistem
+            unlink($proposalPath);
         }
 
-        // Hapus relasi proposal terlebih dahulu
         $dataajuan->proposals()->delete();
 
-        // Hapus data AjuanMagang
         $dataajuan->delete();
 
         return redirect()->back()->with('success', 'Data pengajuan berhasil dihapus.');
