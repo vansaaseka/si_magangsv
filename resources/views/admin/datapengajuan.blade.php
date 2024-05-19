@@ -57,26 +57,42 @@
                                                 data-id="{{ $data->id }}"
                                                 data-target="#ModalAjuanDiterima{{ $data->id }}">Ajuan Diterima</button>
                                         @elseif ($data->status === 'perbaikan proposal')
-                                            <button class="badge badge-danger border-0 text-white bg-danger"
-                                                data-toggle="modal" data-id="{{ $data->id }}"
-                                                data-target="#editModal{{ $data->id }}">Perbaikan
-                                                Proposal</button>
+
                                         @elseif ($data->status === 'proses validasi')
-                                            <button class="badge badge-warning border-0 text-dark" data-toggle="modal"
-                                                data-id="{{ $data->id }}"
-                                                data-target="#modalUnduh{{ $data->id }}">Proses Validasi
-                                                Pimpinan
-                                                SV</button>
+                                            @if ($data->verified === 'approve' && $data->surat_pengantar !== null)
+                                                <button class="badge badge-warning border-0 text-dark" data-toggle="modal"
+                                                    data-id="{{ $data->id }}"
+                                                    data-target="#modalUnduh{{ $data->id }}">Proses Validasi
+                                                    Pimpinan
+                                                    SV</button>
+                                            @else
+                                                <button class="badge badge-warning border-0 text-dark">Proses Validasi
+                                                    Pimpinan
+                                                    SV</button>
+                                            @endif
                                         @elseif ($data->status === 'siap download')
                                             <button class="badge badge-success border-0 text-light">Siap Download</button>
                                         @endif
                                     </td>
                                     <td>
-                                        <button class="btn btn-primary btn-sm edit-btn" data-toggle="modal"
-                                            data-target="#UploadFileModal{{ $data->id }}"
-                                            data-id="{{ $data->id }}"><i class="fas fa-sm fa-edit "></i></button>
-                                        <button class="btn btn-info btn-sm"><i
-                                                class="fas fa-info-circle fa-sm"></i></button>
+                                        <form action="{{ route('datapengajuan.approve', $data->id) }}" class="d-inline"
+                                            method="POST">
+                                            @csrf
+                                            @method('PUT')
+                                            <input type="hidden" name="verified" value="approve">
+                                            <button class="btn btn-success btn-sm edit-btn"><i
+                                                    class="fas fa-sm fa-check-circle "></i></button>
+                                        </form>
+                                        @if ($data->verified == 'approve')
+                                            <button class="btn btn-primary btn-sm edit-btn" data-toggle="modal"
+                                                data-target="#UploadFileModal{{ $data->id }}"
+                                                data-id="{{ $data->id }}"><i class="fas fa-sm fa-edit "></i></button>
+                                        @else
+                                            <button class="btn btn-primary btn-sm edit-btn"><i
+                                                    class="fas fa-sm fa-edit "></i></button>
+                                        @endif
+                                        {{-- <button class="btn btn-info btn-sm"><i
+                                                class="fas fa-info-circle fa-sm"></i></button> --}}
                                         <!-- Edit Modal -->
                                         <div class="modal fade" id="UploadFileModal{{ $data->id }}" tabindex="-1"
                                             role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">

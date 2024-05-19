@@ -109,6 +109,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/', [DataAjuanMahasiswaController::class, 'index'])->name('index');
         Route::put('/update/{id}', [DataAjuanMahasiswaController::class, 'update'])->name('update');
         Route::put('admin/update/{id}', [DataAjuanMahasiswaController::class, 'store'])->name('store');
+        Route::put('approve/{id}', [DataAjuanMahasiswaController::class, 'approve'])->name('approve');
         Route::delete('/delete/{id}', [DataAjuanMahasiswaController::class, 'delete'])->name('delete');
     });
 

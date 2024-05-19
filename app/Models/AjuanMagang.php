@@ -26,7 +26,7 @@ class AjuanMagang extends Model
         'tanggal_mulai',
         'tanggal_selesai',
         'jenis_kegiatan',
-        'dosen_pembimbing'
+        'dosen_pembimbing','verified',
     ];
 
     public function users()

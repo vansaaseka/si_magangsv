@@ -116,6 +116,20 @@ class DataAjuanMahasiswaController extends Controller
     }
 
 
+    public function approve(Request $request, $id)
+    {
+        $dataajuan = AjuanMagang::findOrFail($id);
+
+        $request->validate([
+            'verified' => 'required',
+        ]);
+
+        $dataajuan->update(['verified' => 'approve']);
+
+        return redirect()->back()->with('success', 'Data sudah disetujui.');
+    }
+
+
     public function store(Request $request, $id)
     {
         if (Auth::user()->role_id == '3') {

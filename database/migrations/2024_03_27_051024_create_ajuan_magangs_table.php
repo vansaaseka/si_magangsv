@@ -25,6 +25,7 @@ return new class extends Migration
             $table->enum('status', ['ajuan diterima', 'perbaikan proposal', 'proses validasi', 'siap download'])->nullable();
             $table->string('komentar_status')->nullable();
             $table->string('dosen_pembimbing');
+            $table->string('verified')->nullable();
             $table->integer('bobot_sks');
             $table->date('tanggal_mulai');
             $table->date('tanggal_selesai');
