@@ -346,10 +346,12 @@
                         <div class="collapse" id="pengajuanDropdown">
                             <ul class="nav flex-column sub-menu">
                                 <li class="nav-item"> <a class="nav-link"
-                                        href="{{ route('datapengajuan') }}">Data Pengajuan</a>
+                                        href="{{ route('datapengajuan.index') }}">Data
+                                        Pengajuan</a>
                                 </li>
                                 <li class="nav-item"> <a class="nav-link"
-                                        href="{{ asset('assets/admin-dashboard/pages/ui-features/dropdowns.html') }}">Cetak Data</a>
+                                        href="{{ asset('assets/admin-dashboard/pages/ui-features/dropdowns.html') }}">Cetak
+                                        Data</a>
                                 </li>
                             </ul>
                         </div>

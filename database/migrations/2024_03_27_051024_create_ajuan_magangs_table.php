@@ -22,7 +22,7 @@ return new class extends Migration
             $table->integer('angkatan');
             $table->enum('jenis_ajuan', ['jenis_baru', 'jenis_perbaikan'])->nullable();
             $table->enum('jenis_kegiatan', ['individu', 'kelompok'])->nullable();
-            $table->string('status')->nullable();
+            $table->enum('status', ['ajuan diterima', 'perbaikan proposal', 'proses validasi', 'siap download'])->nullable();
             $table->string('komentar_status')->nullable();
             $table->string('dosen_pembimbing');
             $table->integer('bobot_sks');

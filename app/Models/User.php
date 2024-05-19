@@ -41,7 +41,7 @@ class User extends Authenticatable
 
     public function units()
     {
-        return $this->belongsTo(Unit::class);
+        return $this->belongsTo(Unit::class, 'prodi_id', 'id');
     }
     /**
      * The attributes that should be hidden for serialization.

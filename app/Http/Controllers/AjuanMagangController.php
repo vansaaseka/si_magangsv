@@ -27,6 +27,10 @@ class AjuanMagangController extends Controller
         }
     }
 
+    public function success(){
+        return view('mahasiswa.successtambahpengajuan');
+    }
+
     public function store(Request $request)
     {
         $anggotaIds = [];
@@ -66,10 +70,12 @@ class AjuanMagangController extends Controller
 
         $ajuan = new AjuanMagang();
         $ajuan->angkatan = $request->input('angkatan');
+        $ajuan->status = 'ajuan diterima';
         $ajuan->surat_pengantar = $request->input('surat_pengantar');
         $ajuan->jenis_ajuan = $request->input('jenis_ajuan');
         $ajuan->bobot_sks = $request->input('bobot_sks');
         $ajuan->instansi_id = $instansi->id;
+        $ajuan->tahun_ajaran_semester_id = $request->input('tahun_ajaran_semester_id');
         $ajuan->bukti_magang = $request->input('bukti_magang');
         $ajuan->file_nilai = $request->input('file_nilai');
         $ajuan->tanggal_mulai = $request->input('tanggal_mulai');
@@ -91,6 +97,6 @@ class AjuanMagangController extends Controller
 
         $ajuan->save();
 
-        return redirect()->route('dashboard')->with('success', 'Ajuan magang berhasil diajukan!');
+        return redirect()->route('viewsuccess')->with('success', 'Ajuan magang berhasil diajukan!');
     }
 }

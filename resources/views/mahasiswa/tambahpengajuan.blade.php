@@ -7,11 +7,16 @@
             <p class="card-description">
                 Kegiatan Magang Mahasiswa (KMM) SV UNS
             </p>
+            <a href="https://docs.google.com/document/d/17BEthx2fzHfV0qSTNKzzaCbnYzbbKjxZ" target="_blank"
+                class="btn btn-primary action-button float-end" type="button">Template</a>
 
-            <form action="ajuan" enctype="multipart/form-data" method="post">
+            <form action="ajuan" class="mt-5" enctype="multipart/form-data" method="post">
+
                 @csrf
                 <fieldset id="fieldset1">
-                    <div class="row">
+                    <input type="hidden" name="jenis_ajuan" value="jenis_baru">
+
+                    {{-- <div class="row">
                         <div class="col-md-6">
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Jenis Ajuan*</label>
@@ -33,24 +38,24 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Nama Lengkap*</label>
-                                    <input class="form-control" placeholder="Nama Ketua Kelompok/Individu" name="user_id"
-                                        value="{{ auth()->user()->name }}" />
-                                </div>
+                                <input class="form-control" placeholder="Nama Ketua Kelompok/Individu" name="user_id"
+                                    value="{{ auth()->user()->name }}" />
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Tahun Ajaran Semester*</label>
-                                    <select class="form-control" name="tahun_ajaran_semester">
-                                        <option value="ganjil">Ganjil</option>
-                                        <option value="genap">Genap</option>
-                                    </select>
-                                </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Tahun Ajaran Semester*</label>
+                                <select class="form-control" name="tahun_ajaran_semester_id">
+                                    <option value="1">Ganjil</option>
+                                    <option value="2">Genap</option>
+                                </select>
                             </div>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6">

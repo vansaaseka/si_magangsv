@@ -15,4 +15,9 @@ class Anggota extends Model
     ];
 
 
+    public function ajuanmagangs()
+    {
+        return $this->hasMany(Ajuanmagang::class, 'anggota_id', 'id');
+    }
+
 }

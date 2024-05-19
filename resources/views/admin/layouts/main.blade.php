@@ -337,6 +337,13 @@
                         </a>
                     </li>
                     <li class="nav-item ">
+                        <a href="{{ route('datapengajuan.index') }}" class="nav-link">
+                            <i class="icon-columns menu-icon"></i>
+
+                            <span class="menu-title">Data Pengajuan</span>
+                        </a>
+                    </li>
+                    {{-- <li class="nav-item ">
                         <a class="nav-link" href="#" aria-expanded="false" aria-controls="pengajuanDropdown"
                             onclick="toggleSubmenu('pengajuanDropdown')">
                             <i class="icon-columns menu-icon"></i>
@@ -356,7 +363,7 @@
                                 </li>
                             </ul>
                         </div>
-                    </li>
+                    </li> --}}
 
                     <li class="nav-item {{ $activePage === 'dataprodi' ? 'active' : '' }}">
                         <a class="nav-link" href="{{ route('dataprodi.') }}">

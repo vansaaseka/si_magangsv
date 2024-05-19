@@ -25,6 +25,7 @@
     <link rel="shortcut icon" href="{{ asset('assets/admin-dashboard/images/LogoTypeSV-01.png') }}" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
 
@@ -337,6 +338,12 @@
                         </a>
                     </li>
                     <li class="nav-item  ">
+                        <a href="{{ route('datapengajuan.index') }}" class="nav-link">
+                            <i class="icon-paper menu-icon"></i>
+                            <span class="menu-title">Data Pengajuan</span>
+                        </a>
+                    </li>
+                    <li class="nav-item  ">
                         <a href="{{ route('pengajuanmahasiswa') }}" class="nav-link">
                             <i class="icon-columns menu-icon"></i>
                             <span class="menu-title">Pengajuan</span>
@@ -426,6 +433,8 @@
     <!-- Custom js for this page-->
     <script src="{{ asset('assets/admin-dashboard/js/dashboard.js') }}"></script>
     <script src="{{ asset('assets/admin-dashboard/js/Chart.roundedBarCharts.js') }}"></script>
+
+    @stack('scripts')
 
     <!-- End custom js for this page-->
 </body>

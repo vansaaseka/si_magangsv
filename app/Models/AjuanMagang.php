@@ -31,7 +31,7 @@ class AjuanMagang extends Model
 
     public function users()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     public function tahunajaransemesters()
@@ -41,7 +41,7 @@ class AjuanMagang extends Model
 
     public function proposals()
     {
-        return $this->hasOne(Proposal::class);
+        return $this->belongsTo(Proposal::class, 'proposal_id', 'id');
     }
 
     public function nilaimagangs()
@@ -61,11 +61,11 @@ class AjuanMagang extends Model
 
     public function anggotas()
     {
-        return $this->hasMany(Anggota::class, 'anggota_id', 'id');
+        return $this->belongsTo(Anggota::class, 'anggota_id', 'id');
     }
 
     public function instansis()
     {
-        return $this->belongsTo(Instansi::class);
+        return $this->belongsTo(Instansi::class, 'instansi_id', 'id');
     }
 }

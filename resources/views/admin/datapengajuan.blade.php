@@ -1,4 +1,4 @@
-@extends('cdc.layouts.main')
+@extends('admin.layouts.main')
 
 @section('content')
     <div class="card">
@@ -41,7 +41,9 @@
                                         @if ($data->jenis_kegiatan === 'individu')
                                             <label class="">Individu</label>
                                         @elseif ($data->jenis_kegiatan === 'kelompok')
-                                            <label class="">Kelompok</label>
+                                            <button class="badge badge-primary border-0" data-id="{{ $data->id }}"
+                                                data-toggle="modal"
+                                                data-target="#modalKelompok{{ $data->id }}">Kelompok</button>
                                         @endif
                                     </td>
                                     <td>{{ $data->instansis->nama_instansi }}</td>
@@ -93,8 +95,8 @@
                                                                 <input type="radio" class="form-"
                                                                     id="prosesValidasi{{ $data->id }}" name="status[]"
                                                                     value="proses validasi">
-                                                                <label for="prosesValidasi{{ $data->id }}">Proses
-                                                                    Validasi Pimpinan SV</label>
+                                                                <label for="prosesValidasi{{ $data->id }}">Siap
+                                                                    diDownload</label>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="">Komentar Status</label>
@@ -108,97 +110,48 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="modal fade" id="ModalAjuanDiterima{{ $data->id }}" tabindex="-1"
+                                        <!-- Modal Kelompok -->
+                                        <div class="modal fade" id="modalKelompok{{ $data->id }}" tabindex="-1"
                                             role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
                                             <div class="modal-dialog" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="editModalLabel">Modal Status</h5>
+                                                        <h5 class="modal-title" id="editModalLabel">Daftar Kelompok</h5>
                                                         <button type="button" class="close" data-dismiss="modal"
                                                             aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <form id="editForm"
-                                                            action="{{ route('datapengajuan.update', ['id' => $data->id]) }}"
-                                                            method="POST" enctype="multipart/form-data">
-                                                            @csrf
-                                                            @method('PUT')
-                                                            <div class="form-group form checkbox-wrapper">
-                                                                <input type="radio" class="form-"
-                                                                    id="prosesValidasi{{ $data->id }}" name="status[]"
-                                                                    value="proses validasi">
-                                                                <label for="prosesValidasi{{ $data->id }}">Proses
-                                                                    Validasi Pimpinan SV</label>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="">Komentar Status</label>
-                                                                <input type="text" class="form-control"
-                                                                    name="komentar_status" required>
-                                                            </div>
-                                                            <button type="submit"
-                                                                class="btn btn-primary btn-sm float-end">Submit</button>
-                                                        </form>
+                                                        @php
+                                                            $proditerlibatIds = json_decode($data->anggota_id, true);
+                                                        @endphp
+
+                                                        @if (!empty($proditerlibatIds))
+                                                            @php
+                                                                $jumlahId = count($proditerlibatIds);
+                                                            @endphp
+
+                                                            <!-- Tampilkan anggota kelompok -->
+                                                            @foreach ($proditerlibatIds as $index => $prodiItem)
+                                                                @php
+                                                                    $prodiId = $prodiItem['id'];
+                                                                    $prodi = App\Models\Anggota::find($prodiId);
+                                                                @endphp
+                                                                @if ($prodi)
+                                                                    <p class="m-0 font-weight-bold"> {{ $index + 1 }}.
+                                                                        {{ $prodi->nama }}</p>
+                                                                    <p class="m-0">NIM :{{ $prodi->nim }}</p>
+                                                                    @if (!$loop->last)
+                                                                        <br>
+                                                                    @endif
+                                                                @endif
+                                                            @endforeach
+                                                        @endif
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        {{-- REVISI PROPOSAL --}}
-                                        <div class="modal fade" id="revisiModal{{ $data->id }}" tabindex="-1"
-                                            role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="editModalLabel">Modal Perbaikan
-                                                            Proposal
-                                                        </h5>
-                                                        <button type="button" class="close" data-dismiss="modal"
-                                                            aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <form id="editForm"
-                                                            action="{{ route('datapengajuan.update', ['id' => $data->id]) }}"
-                                                            method="POST" enctype="multipart/form-data">
-                                                            @csrf
-                                                            @method('PUT')
-                                                            <div class="form-group form checkbox-wrapper">
-                                                                <input type="radio" class="form-"
-                                                                    id="perbaikanProposal{{ $data->id }}"
-                                                                    name="status[]" value="perbaikan proposal">
-                                                                <label
-                                                                    for="perbaikanProposal{{ $data->id }}">Perbaikan
-                                                                    Proposal</label>
-                                                            </div>
-                                                            {{-- <div class="form-group form checkbox-wrapper">
-                                                                <input type="radio" class="form-"
-                                                                    id="prosesValidasi{{ $data->id }}" name="status[]"
-                                                                    value="proses validasi">
-                                                                <label for="prosesValidasi{{ $data->id }}">Proses
-                                                                    Validasi Pimpinan SV</label>
-                                                            </div> --}}
-                                                            <div class="form-group">
-                                                                <label for="">Komentar Status</label>
-                                                                <input type="text" class="form-control"
-                                                                    name="komentar_status" required>
-                                                            </div>
-                                                            <button type="submit"
-                                                                class="btn btn-primary btn-sm float-end">Submit</button>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        {{-- <form action="{{ route('datapengajuan.delete', $data->id) }}" method="POST"
-                                            style="display:inline;" id="deleteForm{{ $data->id }}">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="button" class="btn btn-danger btn-sm delete-btn"
-                                                data-id="{{ $data->id }}"><i
-                                                    class="fas fa-trash-alt fa-sm"></i></button>
-                                        </form> --}}
                                     </td>
                                 </tr>
                             @endforeach

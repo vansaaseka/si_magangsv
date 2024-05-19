@@ -20,30 +20,35 @@ class UserSeeder extends Seeder
                 'role_id' => '1',
                 'name' => 'mahasiswa',
                 'email' => 'mahasiswa@gmail.com',
+                'prodi_id' => 1,
                 'password' => Hash::make('12345678')
             ],
             [
                 'role_id' => '2',
                 'name' => 'timcdc',
                 'email' => 'cdc@gmail.com',
+                'prodi_id' => 1,
                 'password' => Hash::make('cdc123')
             ],
             [
                 'role_id' => '3',
                 'name' => 'admin',
                 'email' => 'admin@gmail.com',
+                'prodi_id' => 1,
                 'password' => Hash::make('admin123')
             ],
             [
                 'role_id' => '4',
                 'name' => 'dekan',
                 'email' => 'dekan@gmail.com',
+                'prodi_id' => 1,
                 'password' => Hash::make('dekan123')
             ],
             [
                 'role_id' => '5',
                 'name' => 'dosen',
                 'email' => 'dosen@gmail.com',
+                'prodi_id' => 1,
                 'password' => Hash::make('dosen123')
             ],
         ];

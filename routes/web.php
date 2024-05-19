@@ -5,6 +5,7 @@ use App\Http\Controllers\AkunController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DataAjuanMahasiswaController;
 use App\Http\Controllers\ManajemenUser\AdminController;
 use App\Http\Controllers\ManajemenUser\CDCController;
 use App\Http\Controllers\ManajemenUser\DekanatController;
@@ -45,6 +46,7 @@ Route::middleware(['guest'])->group(function () {
 
 //mahasiswa
 Route::middleware(['auth'])->group(function () {
+
     Route::prefix('/')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
         Route::get('/pengajuanmagang', [AjuanMagangController::class, 'index'])->name('pengajuanmahasiswa');
@@ -99,4 +101,16 @@ Route::middleware(['auth'])->group(function () {
 
 
     Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+
+
+
+    Route::prefix('/datapengajuan')->name('datapengajuan.')->group(function()
+    {
+        Route::get('/', [DataAjuanMahasiswaController::class, 'index'])->name('index');
+        Route::get('/show', [DataAjuanMahasiswaController::class, 'show'])->name('show');
+        Route::put('/update/{id}', [DataAjuanMahasiswaController::class, 'update'])->name('update');
+        Route::delete('/delete/{id}', [DataAjuanMahasiswaController::class, 'delete'])->name('delete');
+    });
+
+    Route::get('/success', [AjuanMagangController::class, 'success'])->name('viewsuccess');
 });
