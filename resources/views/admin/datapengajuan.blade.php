@@ -76,20 +76,24 @@
                                     </td>
                                     <td>
                                         <form action="{{ route('datapengajuan.approve', $data->id) }}" class="d-inline"
-                                            method="POST">
+                                            method="POST" id="approveForm{{ $data->id }}">
                                             @csrf
                                             @method('PUT')
                                             <input type="hidden" name="verified" value="approve">
-                                            <button class="btn btn-success btn-sm edit-btn"><i
-                                                    class="fas fa-sm fa-check-circle "></i></button>
+                                            @if ($data->verified == 'approve')
+                                                <button class="btn btn-success btn-sm edit-btn"><i
+                                                        class="fas fa-sm fa-check-circle "></i></button>
+                                            @else
+                                                <button type="button" class="btn btn-info approve-btn btn-sm edit-btn"
+                                                    data-id="{{ $data->id }}"><i
+                                                        class="fas fa-sm fa-check-circle "></i></button>
+                                            @endif
                                         </form>
                                         @if ($data->verified == 'approve')
-                                            <button class="btn btn-primary btn-sm edit-btn" data-toggle="modal"
-                                                data-target="#UploadFileModal{{ $data->id }}"
+                                            <button type="button" class="btn btn-primary btn-sm edit-btn"
+                                                data-toggle="modal" data-target="#UploadFileModal{{ $data->id }}"
                                                 data-id="{{ $data->id }}"><i class="fas fa-sm fa-edit "></i></button>
                                         @else
-                                            <button class="btn btn-primary btn-sm edit-btn"><i
-                                                    class="fas fa-sm fa-edit "></i></button>
                                         @endif
                                         {{-- <button class="btn btn-info btn-sm"><i
                                                 class="fas fa-info-circle fa-sm"></i></button> --}}
@@ -134,7 +138,7 @@
                                             <div class="modal-dialog" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="modalUnduh">Modal Siap Download</h5>
+                                                        <h1 class="modal-title" id="modalUnduh">Modal Siap Download</h1>
                                                         <button type="button" class="close" data-dismiss="modal"
                                                             aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
@@ -235,23 +239,23 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            $('.delete-btn').on('click', function() {
+            $('.approve-btn').on('click', function() {
                 var id = $(this).data('id');
 
                 // Tampilkan SweetAlert2 untuk konfirmasi penghapusan
                 Swal.fire({
                     title: 'Anda yakin?',
-                    text: "Data ini akan dihapus secara permanen!",
+                    text: "Menyetujui Ajuan Magang ini?",
                     icon: 'warning',
                     showCancelButton: true,
-                    confirmButtonColor: '#d33',
+                    confirmButtonColor: '#9ADE7B',
                     cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Ya, hapus data!',
+                    confirmButtonText: 'Ya, saya setuju!',
                     cancelButtonText: 'Batal'
                 }).then((result) => {
                     if (result.isConfirmed) {
                         // Jika konfirmasi di-setujui, submit form untuk menghapus data
-                        $('#deleteForm' + id).submit();
+                        $('#approveForm' + id).submit();
                     }
                 });
             });

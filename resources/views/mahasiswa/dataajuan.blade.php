@@ -109,7 +109,6 @@
                                                 data-id="{{ $data->id }}"><i
                                                     class="fas fa-trash-alt fa-sm"></i></button>
                                         </form>
-
                                     </td>
                                 </tr>
                             @endforeach

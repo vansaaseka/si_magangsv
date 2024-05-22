@@ -61,9 +61,6 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/delete/{id}', [UnitController::class, 'destroy'])->name('delete');
     });
 
-
-
-
     //Manajemen User
     //Mahasiswa
     Route::prefix('/datamahasiswa')->name('datamahasiswa.')->group(function () {
@@ -97,12 +94,7 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/delete/{id}', [DekanatController::class, 'destroy'])->name('delete');
     });
 
-
-
-
     Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
-
-
 
     Route::prefix('/datapengajuan')->name('datapengajuan.')->group(function()
     {

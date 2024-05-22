@@ -7,38 +7,14 @@
             <p class="card-description">
                 Kegiatan Magang Mahasiswa (KMM) SV UNS
             </p>
-            <a href="https://docs.google.com/document/d/17BEthx2fzHfV0qSTNKzzaCbnYzbbKjxZ" target="_blank"
-                class="btn btn-primary action-button float-end" type="button">Template</a>
 
-            <form action="ajuan" class="mt-5" enctype="multipart/form-data" method="post">
+            <form action="ajuan" enctype="multipart/form-data" method="post">
 
                 @csrf
                 <fieldset id="fieldset1">
+                    <a href="https://docs.google.com/document/d/17BEthx2fzHfV0qSTNKzzaCbnYzbbKjxZ" target="_blank"
+                    class= "mb-5 mt-3 btn btn-primary action-button float-end" type="button">Template Proposal KMM</a>
                     <input type="hidden" name="jenis_ajuan" value="jenis_baru">
-
-                    {{-- <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">Jenis Ajuan*</label>
-                                <div class="col-sm-9">
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input type="radio" class="form-check-input" name="jenis_ajuan"
-                                                value="jenis_baru" id="membershipRadios1" value="Baru" checked>
-                                            Baru
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input type="radio" class="form-check-input" name="jenis_ajuan"
-                                                value="jenis_perbaikan" id="membershipRadios2" value="Perbaikan">
-                                            Perbaikan
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> --}}
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -160,13 +136,13 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Kategori Instansi*</label>
                                 <div class="col-sm-9">
-                                    <select class="form-control" name="kategori">
-                                        <option>Perusahaan Multinasional/Internasional</option>
-                                        <option>Perusahaan Nasional</option>
-                                        <option>Perusahaan Lokal (PT Lokal, CV, Agensi, Startup, dll)</option>
-                                        <option>Instansi Pemerintahan (OPD, Kementrian, dll)</option>
-                                        <option>BUMN (Bank, Pegadaian, PLN, dll)</option>
-                                        <option>BUMD (RSUD, BPR Daerah, dll)</option>
+                                    <select class="form-control" name="kategori_instansi_id">
+                                        <option value="1">Perusahaan Multinasional/Internasional</option>
+                                        <option value="2">Perusahaan Nasional</option>
+                                        <option value="3">Perusahaan Lokal (PT Lokal, CV, Agensi, Startup, dll)</option>
+                                        <option value="4">Instansi Pemerintahan (OPD, Kementrian, dll)</option>
+                                        <option value="5">BUMN (Bank, Pegadaian, PLN, dll)</option>
+                                        <option value="6">BUMD (RSUD, BPR Daerah, dll)</option>
                                     </select>
                                 </div>
                             </div>

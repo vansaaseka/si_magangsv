@@ -343,28 +343,13 @@
                             <span class="menu-title">Data Pengajuan</span>
                         </a>
                     </li>
-                    {{-- <li class="nav-item ">
-                        <a class="nav-link" href="#" aria-expanded="false" aria-controls="pengajuanDropdown"
-                            onclick="toggleSubmenu('pengajuanDropdown')">
-                            <i class="icon-columns menu-icon"></i>
-                            <span class="menu-title">Data Pengajuan</span>
-                            <i class="menu-arrow"></i>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false"
+                            aria-controls="ui-basic">
+                            <i class="icon-layout menu-icon"></i>
+                            <span class="menu-title">Dokumen</span>
                         </a>
-                        <div class="collapse" id="pengajuanDropdown">
-                            <ul class="nav flex-column sub-menu">
-                                <li class="nav-item"> <a class="nav-link"
-                                        href="{{ asset('assets/admin-dashboard/pages/ui-features/buttons.html') }}">Buttons</a>
-                                </li>
-                                <li class="nav-item"> <a class="nav-link"
-                                        href="{{ asset('assets/admin-dashboard/pages/ui-features/dropdowns.html') }}">Dropdowns</a>
-                                </li>
-                                <li class="nav-item"> <a class="nav-link"
-                                        href="{{ asset('assets/admin-dashboard/pages/ui-features/typography.html') }}">Typography</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li> --}}
-
+                    </li>
                     <li class="nav-item {{ $activePage === 'dataprodi' ? 'active' : '' }}">
                         <a class="nav-link" href="{{ route('dataprodi.') }}">
                             <i class="icon-grid-2 menu-icon"></i>
@@ -443,6 +428,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
+
     <script src="{{ asset('assets/admin-dashboard/vendors/js/vendor.bundle.base.js') }}"></script>
     <!-- endinject -->
     <!-- Plugin js for this page -->
@@ -463,6 +449,7 @@
     <script src="{{ asset('assets/admin-dashboard/js/dashboard.js') }}"></script>
     <script src="{{ asset('assets/admin-dashboard/js/Chart.roundedBarCharts.js') }}"></script>
 
+    @stack('scripts')
     <!-- End custom js for this page-->
 </body>
 

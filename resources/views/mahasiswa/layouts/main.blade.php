@@ -47,19 +47,6 @@
                 <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
                     <span class="icon-menu"></span>
                 </button>
-                <ul class="navbar-nav mr-lg-2">
-                    <li class="nav-item nav-search d-none d-lg-block">
-                        <div class="input-group">
-                            <div class="input-group-prepend hover-cursor" id="navbar-search-icon">
-                                <span class="input-group-text" id="search">
-                                    <i class="icon-search"></i>
-                                </span>
-                            </div>
-                            <input type="text" class="form-control" id="navbar-search-input" placeholder="Search now"
-                                aria-label="search" aria-describedby="search">
-                        </div>
-                    </li>
-                </ul>
                 <ul class="navbar-nav navbar-nav-right">
                     <li class="nav-item dropdown">
                         <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#"
@@ -339,33 +326,28 @@
                     </li>
                     <li class="nav-item  ">
                         <a href="{{ route('datapengajuan.index') }}" class="nav-link">
-                            <i class="icon-paper menu-icon"></i>
+                            <i class="icon-bar-graph menu-icon"></i>
                             <span class="menu-title">Data Pengajuan</span>
                         </a>
                     </li>
                     <li class="nav-item  ">
                         <a href="{{ route('pengajuanmahasiswa') }}" class="nav-link">
                             <i class="icon-columns menu-icon"></i>
-                            <span class="menu-title">Pengajuan</span>
+                            <span class="menu-title">Pengajuan Magang</span>
                         </a>
                     </li>
-
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false"
+                            aria-controls="ui-basic">
+                            <i class="icon-layout menu-icon"></i>
+                            <span class="menu-title">Dokumen</span>
+                        </a>
+                    </li>
                     <li class="nav-item ">
                         <a class="nav-link" href="#">
                             <i class="icon-paper menu-icon"></i>
-                            <span class="menu-title">Uplaod</span>
-                            <i class="menu-arrow"></i>
+                            <span class="menu-title">Selesai Magang</span>
                         </a>
-                        <div class="collapse" id="ui-basic">
-                            <ul class="nav flex-column sub-menu">
-                                <li class="nav-item"> <a class="nav-link"
-                                        href="pages/ui-features/buttons.html">Buttons</a></li>
-                                <li class="nav-item"> <a class="nav-link"
-                                        href="pages/ui-features/dropdowns.html">Dropdowns</a></li>
-                                <li class="nav-item"> <a class="nav-link"
-                                        href="pages/ui-features/typography.html">Typography</a></li>
-                            </ul>
-                        </div>
                     </li>
                 </ul>
             </nav>

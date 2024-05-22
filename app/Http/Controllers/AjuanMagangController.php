@@ -27,7 +27,8 @@ class AjuanMagangController extends Controller
         }
     }
 
-    public function success(){
+    public function success()
+    {
         return view('mahasiswa.successtambahpengajuan');
     }
 
@@ -49,7 +50,7 @@ class AjuanMagangController extends Controller
 
         $instansi = new Instansi();
         $instansi->nama_instansi = $request->input('nama_instansi');
-        $instansi->kategori = $request->input('kategori');
+        $instansi->kategori_instansi_id = $request->input('kategori_instansi_id');
         $instansi->no_telpon = $request->input('no_telpon');
         $instansi->alamat_surat = $request->input('alamat_surat');
         $instansi->alamat_instansi = $request->input('alamat_instansi');

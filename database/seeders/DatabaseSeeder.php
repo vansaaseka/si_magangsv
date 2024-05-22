@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             ProdiSeeder::class,
             UserSeeder::class,
             TahunAjaranSemesterSeeder::class,
+            Kategori::class
         ]);
     }
 }
