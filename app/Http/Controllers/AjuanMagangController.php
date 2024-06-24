@@ -19,9 +19,9 @@ class AjuanMagangController extends Controller
         $user = User::all();
         $anggota = Anggota::all();
         $proposal = Proposal::all();
-
+        $dosen = User::where('role_id', 5)->get();
         if (Auth()->user()->role_id == 1) {
-            return view('mahasiswa.tambahpengajuan', compact('ajuan', 'user', 'anggota', 'proposal'));
+            return view('mahasiswa.tambahpengajuan', compact('ajuan', 'user', 'anggota', 'proposal', 'dosen'));
         } else {
             abort(404);
         }
@@ -73,11 +73,13 @@ class AjuanMagangController extends Controller
         $ajuan->angkatan = $request->input('angkatan');
         $ajuan->status = 'ajuan diterima';
         $ajuan->surat_pengantar = $request->input('surat_pengantar');
+        $ajuan->surat_tugas = $request->input('surat_tugas');
         $ajuan->jenis_ajuan = $request->input('jenis_ajuan');
         $ajuan->bobot_sks = $request->input('bobot_sks');
         $ajuan->instansi_id = $instansi->id;
-        $ajuan->tahun_ajaran_semester_id = $request->input('tahun_ajaran_semester_id');
-        $ajuan->bukti_magang = $request->input('bukti_magang');
+        $ajuan->semester = $request->input('semester');
+        $ajuan->tahun = $request->input('tahun');
+        $ajuan->bukti_magang_id = $request->input('bukti_magang_id');
         $ajuan->file_nilai = $request->input('file_nilai');
         $ajuan->tanggal_mulai = $request->input('tanggal_mulai');
         $ajuan->tanggal_selesai = $request->input('tanggal_selesai');

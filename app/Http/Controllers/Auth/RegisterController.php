@@ -14,26 +14,12 @@ use PhpParser\Node\Stmt\Return_;
 
 class RegisterController extends Controller
 {
-
-
     protected $redirectTo = RouteServiceProvider::HOME;
 
     public function __construct()
     {
         $this->middleware('guest');
     }
-
-    // protected function validator(array $data)
-    // {
-    //     return Validator::make($data, [
-    //         'name' => ['required', 'string', 'max:255'],
-    //         'nim' => ['required', 'string', 'max:20',],
-    //         'unit' => ['required', 'string', 'max:255'],
-    //         'no_wa' => ['required', 'string', 'max:15'],
-    //         'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-    //         'password' => ['required', 'string', 'min:8', 'confirmed'],
-    //     ]);
-    // }
 
     public function showRegistrationForm()
     {
@@ -48,8 +34,9 @@ class RegisterController extends Controller
             'nim' => ['required', 'string', 'max:20'],
             'no_wa' => ['required', 'string', 'max:15'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            // 'password' => ['required', 'string'],
+            'password' => ['required', 'string', 'min:8'],
             'prodi_id' => ['required', 'string'],
+            'status' => ['required']
         ]);
 
         User::create([
@@ -59,9 +46,10 @@ class RegisterController extends Controller
             'password' =>  Hash::make($request->input('password')),
             'role_id' => 1,
             'nim' => $dataVal['nim'],
-            'no_wa' => $dataVal['no_wa']
+            'no_wa' => $dataVal['no_wa'],
+            'status' => $dataVal['status']
         ]);
 
-        return redirect()->route('login');
+        return redirect()->route('login')->with('registration_success', true);
     }
 }

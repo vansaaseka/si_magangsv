@@ -1,7 +1,10 @@
 <?php
 
+
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
+use PhpOffice\PhpWord\TemplateProcessor;
+
 
 define('LARAVEL_START', microtime(true));
 
@@ -53,3 +56,19 @@ $response = $kernel->handle(
 )->send();
 
 $kernel->terminate($request, $response);
+
+// // Path ke template dokumen Word
+// $templatePath = 'path/to/template.docx';
+
+// // Buat instance TemplateProcessor
+// $templateProcessor = new TemplateProcessor($templatePath);
+
+// // Isi variabel di template
+// $templateProcessor->setValue('variableName', 'value');
+
+// // Simpan dokumen hasil
+// $outputPath = 'path/to/output.docx';
+// $templateProcessor->saveAs($outputPath);
+
+// echo "Dokumen berhasil dibuat di: " . $outputPath;
+?>

@@ -16,34 +16,37 @@ class UnitController extends Controller
 
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'namaprodi' => 'required',
-        ]);
+    $request->validate([
+        'namaprodi' => 'required',
+    ]);
 
-        Unit::create([
-            'nama_prodi' => $request->namaprodi,
-        ]);
+    Unit::create([
+        'nama_prodi' => $request->namaprodi,
+    ]);
 
-        return redirect()->route('dataprodi.')->with('toast_success', 'Data Berhasil Ditambahkan');
+    return redirect()->route('dataprodi.index')->with('toast_success', 'Data Berhasil Ditambahkan');
     }
 
 
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
-            'namaprodi' => 'required',
-        ]);
-        $prodi = Unit::find($id);
-        $prodi->update([
-            'nama_prodi' => $request->namaprodi,
-        ]);
-        return redirect()->route('dataprodi.')->with('toast_success', 'Data Berhasil Diupdate');
+    $request->validate([
+        'namaprodi' => 'required',
+    ]);
+
+    $prodi = Unit::findOrFail($id);
+    $prodi->update([
+        'nama_prodi' => $request->namaprodi,
+    ]);
+
+    return redirect()->route('dataprodi.index')->with('toast_success', 'Data Berhasil Diupdate');
     }
+
 
     public function destroy($id)
     {
-        $prodi = Unit::find($id);
+        $prodi = Unit::findOrFail($id);
         $prodi->delete();
-        return redirect()->route('dataprodi.')->with('toast_success', 'Data Berhasil Dihapus');
+        return redirect()->route('dataprodi.index')->with('toast_success', 'Data Berhasil Dihapus');
     }
 }

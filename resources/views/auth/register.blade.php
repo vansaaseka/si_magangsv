@@ -11,12 +11,12 @@
     <link rel="stylesheet" href="{{ asset('assets/admin-dashboard/vendors/ti-icons/css/themify-icons.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/admin-dashboard/vendors/css/vendor.bundle.base.css') }}">
     <!-- endinject -->
-    <!-- Plugin css for this page -->
-    <!-- End plugin css for this page -->
     <!-- inject:css -->
     <link rel="stylesheet" href="{{ asset('assets/admin-dashboard/css/vertical-layout-light/style.css') }}">
     <!-- endinject -->
     <link rel="shortcut icon" href="{{ asset('assets/admin-dashboard/images/LogoTypeSV-01.png') }}" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -27,11 +27,11 @@
                     <div class="col-lg-4 mx-auto">
                         <div class="auth-form-light text-center py-5 px-4 px-sm-5">
                             <div class="brand-logo">
-                                <img src="assets/landingpage/assets/images/LogoSV.png" alt="logo">
+                                <img src="{{ asset('assets/landingpage/images/LogoSV1.png') }}" alt="logo">
                             </div>
                             <h4>Belum Punya Akun?</h4>
                             <h6 class="font-weight-light">Silahkan buat akun menggunakan email SSO</h6>
-                            <form action="{{ route('register.post') }}" method="POST">
+                            <form id="registrationForm" action="{{ route('register.post') }}" method="POST">
                                 @csrf
                                 <div class="form-group">
                                     <input type="text"
@@ -58,8 +58,6 @@
                                 </div>
 
                                 <div class="form-group">
-                                    {{-- <input type="text" class="form-control form-control-lg @error('prodi_id') is-invalid @enderror" name="prodi_id" value="{{ old('prodi_id') }}" required autocomplete="unit" id="prodi_id" placeholder="Prodi"> --}}
-
                                     <select
                                         class="form-control form-control-lg text-black @error('prodi_id') is-invalid @enderror"
                                         name="prodi_id" id="">
@@ -74,7 +72,6 @@
                                             <strong>{{ $message }}</strong>
                                         </span>
                                     @enderror
-
                                 </div>
 
                                 <div class="form-group">
@@ -102,6 +99,18 @@
                                 </div>
 
                                 <div class="form-group">
+                                    <input type="hidden"
+                                        class="form-control form-control-lg @error('status') is-invalid @enderror"
+                                        name="status" value="1" required autocomplete="status"
+                                        id="status" placeholder="status">
+                                    @error('status')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group">
                                     <input type="password"
                                         class="form-control form-control-lg @error('password') is-invalid @enderror"
                                         name="password" required autocomplete="new-password" id="password"
@@ -120,8 +129,8 @@
                                 </div>
 
                                 <div class="mt-3">
-                                    <button type="submit"
-                                        class="btn btn-block btn-info btn-lg font-weight-medium auth-form-btn">DAFTAR</button>
+                                    <button type="button"
+                                        class="btn btn-block register-btn btn-info btn-lg font-weight-medium auth-form-btn">DAFTAR</button>
                                 </div>
                                 <div class="text-center mt-4 font-weight-light">
                                     Sudah punya akun? <a href="{{ route('login') }}" class="text-primary">Login</a>
@@ -136,15 +145,48 @@
     <!-- plugins:js -->
     <script src="../../vendors/js/vendor.bundle.base.js"></script>
     <!-- endinject -->
-    <!-- Plugin js for this page -->
-    <!-- End plugin js for this page -->
-    <!-- inject:js -->
     <script src="../../assets/js/off-canvas.js"></script>
     <script src="../../assets/js/hoverable-collapse.js"></script>
     <script src="../../assets/js/template.js"></script>
     <script src="../../assets/js/settings.js"></script>
     <script src="../../assets/js/todolist.js"></script>
     <!-- endinject -->
+    <script>
+        $(document).ready(function() {
+            $('.register-btn').on('click', function(e) {
+                e.preventDefault();
+
+                let form = $('#registrationForm');
+                let formData = form.serialize();
+
+                $.post(form.attr('action'), formData, function(response) {
+                    Swal.fire({
+                        title: "Good job!",
+                        text: "You have successfully registered! Please login.",
+                        icon: "success"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = '{{ route('login') }}';
+                        }
+                    });
+                }).fail(function(response) {
+                    // Handle validation errors here
+                    let errors = response.responseJSON.errors;
+                    let errorMessage = 'Please correct the following errors:';
+                    for (let key in errors) {
+                        if (errors.hasOwnProperty(key)) {
+                            errorMessage += '\n' + errors[key];
+                        }
+                    }
+                    Swal.fire({
+                        title: "Error!",
+                        text: errorMessage,
+                        icon: "error"
+                    });
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>

@@ -9,14 +9,20 @@ class Logbook extends Model
 {
     use HasFactory;
 
-    protected $fillable =[
-        'ajuan_logbook_id',
+    protected $fillable = [
+        'ajuan_magang_id',
         'judul_logbook',
         'tanggal',
         'deskripsi'
     ];
 
-    public function ajuanlogbooks() {
-        return $this->belongsTo(AjuanLogbook::class);
+    public function ajuanmagangs()
+    {
+        return $this->belongsTo(AjuanMagang::class, 'logbook_id');
+    }
+
+    public function anggotas()
+    {
+        return $this->belongsToMany(Anggota::class, 'ajuan_magang', 'id_anggota', 'id_logbook');
     }
 }

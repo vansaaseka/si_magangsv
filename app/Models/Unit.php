@@ -18,5 +18,4 @@ class Unit extends Model
     {
         return $this->hasMany(User::class, 'prodi_id');
     }
-
 }

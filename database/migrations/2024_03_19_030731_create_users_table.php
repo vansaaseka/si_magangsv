@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('no_wa')->nullable();
             $table->string('email')->unique();
             $table->foreignId('prodi_id')->nullable()->constrained('units')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->boolean('status');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

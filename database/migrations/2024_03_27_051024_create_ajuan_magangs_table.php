@@ -14,10 +14,9 @@ return new class extends Migration
         Schema::create('ajuan_magangs', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable();
-            $table->unsignedBigInteger('tahun_ajaran_semester_id')->nullable();
             $table->unsignedBigInteger('instansi_id')->nullable();
             $table->unsignedBigInteger('proposal_id')->nullable();
-            $table->unsignedBigInteger('laporan_akhir_id')->nullable();
+            $table->unsignedBigInteger('bukti_magang_id')->nullable();
             $table->string('anggota_id')->nullable();
             $table->integer('angkatan');
             $table->enum('jenis_ajuan', ['jenis_baru', 'jenis_perbaikan'])->nullable();
@@ -30,15 +29,17 @@ return new class extends Migration
             $table->date('tanggal_mulai');
             $table->date('tanggal_selesai');
             $table->string('surat_pengantar')->nullable();
+            $table->string('surat_tugas')->nullable();
             $table->string('file_nilai')->nullable();
-            $table->string('bukti_magang')->nullable();
+            $table->string('laporan_akhir')->nullable();
+            $table->enum('semester', ['genap', 'ganjil']);
+            $table->string('tahun');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('tahun_ajaran_semester_id')->references('id')->on('tahun_ajaran_semesters')->onDelete('cascade');
             $table->foreign('proposal_id')->references('id')->on('proposals')->onDelete('cascade');
-            $table->foreign('laporan_akhir_id')->references('id')->on('laporan_akhirs')->onDelete('cascade');
             $table->foreign('instansi_id')->references('id')->on('instansis')->onDelete('cascade');
+            $table->foreign('bukti_magang_id')->references('id')->on('bukti_magangs')->onDelete('cascade');
         });
     }
 

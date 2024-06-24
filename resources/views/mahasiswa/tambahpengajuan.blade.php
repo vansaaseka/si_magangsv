@@ -13,7 +13,7 @@
                 @csrf
                 <fieldset id="fieldset1">
                     <a href="https://docs.google.com/document/d/17BEthx2fzHfV0qSTNKzzaCbnYzbbKjxZ" target="_blank"
-                    class= "mb-5 mt-3 btn btn-primary action-button float-end" type="button">Template Proposal KMM</a>
+                        class= "mb-5 mt-3 btn btn-primary action-button float-end" type="button">Template Proposal KMM</a>
                     <input type="hidden" name="jenis_ajuan" value="jenis_baru">
                     <div class="row">
                         <div class="col-md-6">
@@ -26,7 +26,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Tahun Ajaran Semester*</label>
-                                <select class="form-control" name="tahun_ajaran_semester_id">
+                                <select class="form-control" name="semester">
                                     <option value="1">Ganjil</option>
                                     <option value="2">Genap</option>
                                 </select>
@@ -45,18 +45,22 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Bobot SKS*</label>
-                                <select class="form-control" name="bobot_sks">
-                                    <option value="2">2</option>
-                                    <option value="4">4</option>
-                                    <option value="6">6</option>
-                                </select>
+                                <label>Tahun*</label>
+                                <input class="form-control" placeholder="2024" name="tahun" />
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Nama Dosen Pembimbing*</label>
-                                <input class="form-control" placeholder="Nama Dosen Pembimbing" name="dosen_pembimbing" />
+                                <select class="form-control" id="dosen_pembimbing" name="dosen_pembimbing"
+                                    style="width: 100%;">
+                                    <option value="" style="text-align: left; padding-left: 10px;">Pilih nama dosen
+                                        pembimbing</option>
+                                    @foreach ($dosen as $d)
+                                        <option value="{{ $d->id }}">
+                                            {{ $d->name }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -109,7 +113,9 @@
                     </div>
                     <!-- Bagian untuk Dosen Pembimbing -->
                     <!-- Anda bisa menambahkan lebih banyak bagian untuk anggota dengan cara yang serupa -->
-                    <button type="button" class="next btn btn-info">Lanjut</button>
+                    <div class="col-md-12 text-right">
+                        <button type="button" class="next btn btn-info">Lanjut</button>
+                    </div>
                 </fieldset>
                 <!-- Fieldset Kedua untuk Bagian Lainnya -->
                 <fieldset id="fieldset2" style="display: none;">
@@ -139,7 +145,8 @@
                                     <select class="form-control" name="kategori_instansi_id">
                                         <option value="1">Perusahaan Multinasional/Internasional</option>
                                         <option value="2">Perusahaan Nasional</option>
-                                        <option value="3">Perusahaan Lokal (PT Lokal, CV, Agensi, Startup, dll)</option>
+                                        <option value="3">Perusahaan Lokal (PT Lokal, CV, Agensi, Startup, dll)
+                                        </option>
                                         <option value="4">Instansi Pemerintahan (OPD, Kementrian, dll)</option>
                                         <option value="5">BUMN (Bank, Pegadaian, PLN, dll)</option>
                                         <option value="6">BUMD (RSUD, BPR Daerah, dll)</option>
@@ -157,65 +164,87 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Bobot SKS*</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control" name="bobot_sks">
+                                        <option value="2">2</option>
+                                        <option value="4">4</option>
+                                        <option value="6">6</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="col-form-label">Alamat Surat Pengantar*</label>
+                                    <p class="card-description">
+                                        Contoh : Yth.Kepala Dinas Pertanahan Kota Surakarta atau CEO Gojek Indonesia.
+                                    </p>
+                                    <input type="text" class="form-control" name="alamat_surat" />
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class=" col-form-label">Alamat Instansi*</label>
+                                    <p class="card-description">
+                                        Contoh : <br>
+                                        Jalan Raya Songgo Langit 20, <br>
+                                        Gentan, Baki, Sukoharjo <br>
+                                        Jawa Tengah 57194
+                                    </p>
+                                    <textarea name="alamat_instansi" class="w-100 form-control" style="height: 150px !important"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="col-form-label">Judul Proposal KMM*</label>
+                                    <p class="card-description">
+                                        Contoh : Perbedaan Tingkat Stres Kerja Pegawai PT Adem Ayem Indonesia.<br>
+                                        JANGAN KAPITAL SEMUA
+                                    </p>
+                                    <input type="text" class="form-control" name="judul_proposal" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="padding: 15px">
                             <div class="form-group">
-                                <label class="col-form-label">Alamat Surat Pengantar*</label>
+                                <label class="col-form-label">Upload Proposal KMM*</label>
                                 <p class="card-description">
-                                    Contoh : Yth.Kepala Dinas Pertanahan Kota Surakarta atau CEO Gojek Indonesia.
+                                    Silahkan upload proposal yang sudah disetujui Pembimbing Magang dan Kaprodi. Tanda
+                                    tangan
+                                    Wakil Dekan 1 akan
+                                    dibubuhkan pada file yang di-upload ke form ini dan dikirimkan kembali ke mahasiswa
+                                    bersama
+                                    Surat Pengantar. <br>
+                                    NAMA FILE NIM-NamaMhs-ProposalKMM.pdf. Format dapat diunduh disini.
                                 </p>
-                                <input type="text" class="form-control" name="alamat_surat" />
+                                <div class="input-group col-xs-12">
+                                    <input type="file" accept=".pdf" name="nama_file"
+                                        class="form-control file-upload-info" placeholder="Upload File">
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label class=" col-form-label">Alamat Instansi*</label>
-                                <p class="card-description">
-                                    Contoh : <br>
-                                    Jalan Raya Songgo Langit 20, <br>
-                                    Gentan, Baki, Sukoharjo <br>
-                                    Jawa Tengah 57194
-                                </p>
-                                <textarea name="alamat_instansi" class="w-100 form-control" style="height: 150px !important"></textarea>
-                            </div>
+                        <div class="col-md-12 text-right">
+                            <button type="button" class="btn btn-light previous">Kembali</button>
+                            <button type="submit" class="btn btn-info">Submit</button>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="col-form-label">Judul Proposal KMM*</label>
-                                <p class="card-description">
-                                    Contoh : Perbedaan Tingkat Stres Kerja Pegawai PT Adem Ayem Indonesia.<br>
-                                    JANGAN KAPITAL SEMUA
-                                </p>
-                                <input type="text" class="form-control" name="judul_proposal" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row" style="padding: 15px">
-                        <div class="form-group">
-                            <label class="col-form-label">Upload Proposal KMM*</label>
-                            <p class="card-description">
-                                Silahkan upload proposal yang sudah disetujui Pembimbing Magang dan Kaprodi. Tanda tangan
-                                Wakil Dekan 1 akan
-                                dibubuhkan pada file yang di-upload ke form ini dan dikirimkan kembali ke mahasiswa bersama
-                                Surat Pengantar. <br>
-                                NAMA FILE NIM-NamaMhs-ProposalKMM.pdf. Format dapat diunduh disini.
-                            </p>
-                            <div class="input-group col-xs-12">
-                                <input type="file" accept=".pdf" name="nama_file"
-                                    class="form-control file-upload-info" placeholder="Upload File">
-                            </div>
-                        </div>
-                    </div>
-                    <button type="button" class="btn btn-light previous">Kembali</button>
-                    <button type="submit" class="next btn btn-info">Submit</button>
                 </fieldset>
             </form>
         </div>
     </div>
     <script>
+        $(document).ready(function() {
+            // Inisialisasi Select2
+            $('#dosen_pembimbing').select2({
+                placeholder: 'Pilih nama dosen pembimbing',
+                allowClear: true,
+            });
+        });
         document.addEventListener('DOMContentLoaded', function() {
             const fieldsets = document.querySelectorAll('fieldset');
             let currentFieldsetIndex = 0;
@@ -293,4 +322,18 @@
 
         });
     </script>
+    <style>
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: -70px;
+            height: 48px;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 48px;
+        }
+
+        .select2-container--default .select2-selection--single {
+            height: 48px;
+        }
+    </style>
 @endsection

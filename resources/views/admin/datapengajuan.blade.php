@@ -1,5 +1,8 @@
 @extends('admin.layouts.main')
-
+@push('style')
+    {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"> --}}
+@endpush
 @section('content')
     <div class="card">
         <div class="card-body">
@@ -8,6 +11,7 @@
                 <table class="table">
                     <thead>
                         <tr>
+                            <th>No</th>
                             <th>Tahun Ajaran</th>
                             <th>Nama Mahasiswa</th>
                             <th>Prodi</th>
@@ -25,13 +29,15 @@
                                 <td colspan="6" class="text-center">Data kosong</td>
                             </tr>
                         @else
+                        @php $no = 1; @endphp
                             @foreach ($dataajuan as $data)
                                 <tr>
+                                    <td>{{ $no++ }}</td>
                                     <td>
-                                        @if ($data->tahun_ajaran_semester_id === 1)
-                                            <label>Ganjil</label>
-                                        @elseif ($data->tahun_ajaran_semester_id === 2)
-                                            <label>Genap</label>
+                                        @if ($data->semester === 'ganjil')
+                                            <label>Ganjil/{{ $data->tahun }}</label>
+                                        @elseif ($data->semester === 'genap')
+                                            <label>Genap/{{ $data->tahun }}</label>
                                         @endif
                                     </td>
                                     <td>{{ $data->users->name }}</td>
@@ -75,150 +81,232 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <form action="{{ route('datapengajuan.approve', $data->id) }}" class="d-inline"
-                                            method="POST" id="approveForm{{ $data->id }}">
-                                            @csrf
-                                            @method('PUT')
-                                            <input type="hidden" name="verified" value="approve">
-                                            @if ($data->verified == 'approve')
-                                                <button class="btn btn-success btn-sm edit-btn"><i
-                                                        class="fas fa-sm fa-check-circle "></i></button>
-                                            @else
-                                                <button type="button" class="btn btn-info approve-btn btn-sm edit-btn"
-                                                    data-id="{{ $data->id }}"><i
-                                                        class="fas fa-sm fa-check-circle "></i></button>
-                                            @endif
-                                        </form>
-                                        @if ($data->verified == 'approve')
-                                            <button type="button" class="btn btn-primary btn-sm edit-btn"
-                                                data-toggle="modal" data-target="#UploadFileModal{{ $data->id }}"
-                                                data-id="{{ $data->id }}"><i class="fas fa-sm fa-edit "></i></button>
-                                        @else
-                                        @endif
-                                        {{-- <button class="btn btn-info btn-sm"><i
-                                                class="fas fa-info-circle fa-sm"></i></button> --}}
-                                        <!-- Edit Modal -->
-                                        <div class="modal fade" id="UploadFileModal{{ $data->id }}" tabindex="-1"
-                                            role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
+                                        <button class="btn btn-warning btn-sm" data-toggle="modal"
+                                            data-target="#detailModal{{ $data->id }}"><i
+                                                class="fas fa-info-circle fa-sm"></i></button>
+                                        <!-- Modal Detail -->
+                                        <div class="modal fade" id="detailModal{{ $data->id }}" tabindex="-1"
+                                            aria-labelledby="detailModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="editModalLabel"></h5>
-                                                        <button type="button" class="close" data-dismiss="modal"
-                                                            aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
+                                                        <h3 class="modal-title fs-5" id="detailModalLabel">Detail Pengajuan
+                                                        </h3>
+                                                        <button type="button" class="btn btn-close" data-dismiss="modal"
+                                                            aria-label="Close">x</button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <form id="editForm"
-                                                            action="{{ route('datapengajuan.store', ['id' => $data->id]) }}"
-                                                            method="POST" enctype="multipart/form-data">
-                                                            @csrf
-                                                            @method('PUT')
-                                                            <div class="form-group">
-                                                                <label for="">Surat Pengantar</label>
-                                                                <input type="file" class="form-control"
-                                                                    name="surat_pengantar" accept=".pdf" required>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="">Proposal Mahasiswa</label>
-                                                                <input type="file" class="form-control" accept=".pdf"
-                                                                    name="nama_file" required>
-                                                            </div>
-                                                            <button type="submit"
-                                                                class="btn btn-primary btn-sm float-end">Submit</button>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- Modal Unduh  -->
-                                        <div class="modal fade" id="modalUnduh{{ $data->id }}" tabindex="-1"
-                                            role="dialog" aria-labelledby="modalUnduh" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h1 class="modal-title" id="modalUnduh">Modal Siap Download</h1>
-                                                        <button type="button" class="close" data-dismiss="modal"
-                                                            aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <form id="editForm"
-                                                            action="{{ route('datapengajuan.update', ['id' => $data->id]) }}"
-                                                            method="POST" enctype="multipart/form-data">
-                                                            @csrf
-                                                            @method('PUT')
-                                                            <div class="form-group form checkbox-wrapper">
-                                                                <input type="radio" class="form-"
-                                                                    id="siapDownload{{ $data->id }}" name="status[]"
-                                                                    value="siap download">
-                                                                <label for="siapDownload{{ $data->id }}">Siap
-                                                                    Download</label>
-                                                            </div>
-                                                            <button type="submit"
-                                                                class="btn btn-primary btn-sm float-end">Submit</button>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- Modal Kelompok -->
-                                        <div class="modal fade" id="modalKelompok{{ $data->id }}" tabindex="-1"
-                                            role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="editModalLabel">Daftar Kelompok</h5>
-                                                        <button type="button" class="close" data-dismiss="modal"
-                                                            aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        @php
-                                                            $proditerlibatIds = json_decode($data->anggota_id, true);
-                                                        @endphp
-
-                                                        @if (!empty($proditerlibatIds))
-                                                            @php
-                                                                $jumlahId = count($proditerlibatIds);
-                                                            @endphp
-
-                                                            <!-- Tampilkan anggota kelompok -->
-                                                            @foreach ($proditerlibatIds as $index => $prodiItem)
-                                                                @php
-                                                                    $prodiId = $prodiItem['id'];
-                                                                    $prodi = App\Models\Anggota::find($prodiId);
-                                                                @endphp
-                                                                @if ($prodi)
-                                                                    <p class="m-0 font-weight-bold"> {{ $index + 1 }}.
-                                                                        {{ $prodi->nama }}</p>
-                                                                    <p class="m-0">NIM :{{ $prodi->nim }}</p>
-                                                                    @if (!$loop->last)
-                                                                        <br>
-                                                                    @endif
-                                                                @endif
-                                                            @endforeach
-                                                        @endif
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                                        <table id="table" style="width: 100% !important;">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <th>Nama Mahasiswa</th>
+                                                                    <td>:</td>
+                                                                    <td>{{ $data->users->name }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>NIM</th>
+                                                                    <td>:</td>
+                                                                    <td>{{ $data->users->nim }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Prodi</th>
+                                                                    <td>:</td>
+                                                                    <td>{{ $data->users->units->nama_prodi }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Judul Kegiatan</th>
+                                                                    <td>:</td>
+                                                                    <td>{{ $data->proposals->judul_proposal }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Pembimbing</th>
+                                                                    <td>:</td>
+                                                                    <td>{{ $data->dosen_pembimbing }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Bobot SKS</th>
+                                                                    <td>:</td>
+                                                                    <td>{{ $data->bobot_sks }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Instansi</th>
+                                                                    <td>:</td>
+                                                                    <td>{{ $data->instansis->nama_instansi }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Alamat Instansi</th>
+                                                                    <td>:</td>
+                                                                    <td>{{ $data->instansis->alamat_instansi }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Tanggal Mulai</th>
+                                                                    <td>:</td>
+                                                                    <td>{{ $data->tanggal_mulai }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Tanggal Selesai</th>
+                                                                    <td>:</td>
+                                                                    <td>{{ $data->tanggal_selesai }}</td>
+                                                                </tr>
                                     </td>
                                 </tr>
-                            @endforeach
-                        @endif
                     </tbody>
                 </table>
             </div>
+            <div class="modal-footer">
+                {{-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> --}}
+                <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+            </div>
         </div>
+    </div>
+    </div>
+    <form action="{{ route('datapengajuan.approve', $data->id) }}" class="d-inline" method="POST"
+        id="approveForm{{ $data->id }}">
+        @csrf
+        @method('PUT')
+        <input type="hidden" name="verified" value="approve">
+        @if ($data->verified == 'approve')
+            <button class="btn btn-success btn-sm edit-btn"><i class="fas fa-sm fa-check-circle "></i></button>
+        @else
+            <button type="button" class="btn btn-info approve-btn btn-sm edit-btn" data-id="{{ $data->id }}"><i
+                    class="fas fa-sm fa-check-circle "></i></button>
+        @endif
+    </form>
+    @if ($data->verified == 'approve')
+        <button type="button" class="btn btn-primary btn-sm edit-btn" data-toggle="modal"
+            data-target="#UploadFileModal{{ $data->id }}" data-id="{{ $data->id }}"><i
+                class="fas fa-sm fa-edit "></i></button>
+    @else
+    @endif
+    <!-- Edit Modal -->
+    <div class="modal fade" id="UploadFileModal{{ $data->id }}" tabindex="-1" role="dialog"
+        aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Upload Surat Pengantar dan Proposal</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="editForm" action="{{ route('datapengajuan.store', ['id' => $data->id]) }}" method="POST"
+                        enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT')
+                        <div class="form-group">
+                            <label for="">Surat Pengantar</label>
+                            <input type="file" class="form-control" name="surat_pengantar" accept=".pdf" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Proposal Mahasiswa</label>
+                            <input type="file" class="form-control" accept=".pdf" name="nama_file" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-sm float-end">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Unduh  -->
+    <div class="modal fade" id="modalUnduh{{ $data->id }}" tabindex="-1" role="dialog"
+        aria-labelledby="modalUnduh" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modalUnduh">Upload Siap Download</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="editForm" action="{{ route('datapengajuan.update', ['id' => $data->id]) }}"
+                        method="POST" enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT')
+                        <div class="form-group form checkbox-wrapper">
+                            <input type="radio" class="form-" id="siapDownload{{ $data->id }}" name="status[]"
+                                value="siap download">
+                            <label for="siapDownload{{ $data->id }}">Siap
+                                Download</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-sm float-end">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Kelompok -->
+    <div class="modal fade" id="modalKelompok{{ $data->id }}" tabindex="-1" role="dialog"
+        aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Daftar Kelompok</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @php
+                        $proditerlibatIds = json_decode($data->anggota_id, true);
+                    @endphp
+
+                    @if (!empty($proditerlibatIds))
+                        @php
+                            $jumlahId = count($proditerlibatIds);
+                        @endphp
+
+                        <!-- Tampilkan anggota kelompok -->
+                        @foreach ($proditerlibatIds as $index => $prodiItem)
+                            @php
+                                $prodiId = $prodiItem['id'];
+                                $prodi = App\Models\Anggota::find($prodiId);
+                            @endphp
+                            @if ($prodi)
+                                <p class="m-0 font-weight-bold"> {{ $index + 1 }}.
+                                    {{ $prodi->nama }}</p>
+                                <p class="m-0">NIM :{{ $prodi->nim }}</p>
+                                @if (!$loop->last)
+                                    <br>
+                                @endif
+                            @endif
+                        @endforeach
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+    </td>
+    </tr>
+    @endforeach
+    @endif
+    </tbody>
+    </table>
+    </div>
+    </div>
     </div>
 @endsection
 
+@push('style')
+    {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"> --}}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+@endpush
+
 @push('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script>
+        $(document).ready(function() {
+            // Handle click on "Upload" button
+            $('.badge-success').on('click', function() {
+                var id = $(this).data('id');
+                $('#UploadFileModal' + id).modal('show');
+            });
+
+            // Additional JavaScript logic can be added here as needed
+        });
+
         document.addEventListener('DOMContentLoaded', function() {
             $('.edit-btn').on('click', function() {
                 var id = $(this).data('id');
@@ -227,18 +315,14 @@
                     url: '/dataajuan/' + id + '/edit',
                     method: 'GET',
                     success: function(data) {
-                        $('#editForm').attr('action', '/dataajuan/update/' + id);
+                        $('#editForm').attr('action', '/datapengajuan/update/' + id);
                         $('#tahun_ajaran_semester_id').val(data.tahun_ajaran_semester_id);
                         $('#nama_instansi').val(data.instansis.nama_instansi);
                         // Populate other fields as needed
                     }
                 });
             });
-        });
-    </script>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
             $('.approve-btn').on('click', function() {
                 var id = $(this).data('id');
 
@@ -260,5 +344,10 @@
                 });
             });
         });
+
+        @if (session('success'))
+            toastr.success("{{ session('success') }}");
+        @endif
     </script>
 @endpush
+

@@ -13,20 +13,22 @@ class AjuanMagang extends Model
         'user_id',
         'tahun_ajaran_semester_id',
         'instansi_id',
+        'bukti_magang_id',
         'anggota_id',
         'proposal_id',
-        'laporan_akhir_id',
+        'laporan_akhir',
         'angkatan',
         'surat_pengantar',
+        'surat_tugas',
         'jenis_ajuan',
-        'bukti_magang',
         'status',
         'bobot_sks',
         'file_nilai',
         'tanggal_mulai',
         'tanggal_selesai',
         'jenis_kegiatan',
-        'dosen_pembimbing', 'verified',
+        'dosen_pembimbing',
+        'verified',
     ];
 
     public function users()
@@ -36,7 +38,7 @@ class AjuanMagang extends Model
 
     public function tahunajaransemesters()
     {
-        return $this->belongsTo(TahunAjaranSemester::class);
+        return $this->belongsTo(TahunAjaranSemester::class, 'tahun_ajaran_semester_id', 'id');
     }
 
     public function proposals()
@@ -44,28 +46,28 @@ class AjuanMagang extends Model
         return $this->belongsTo(Proposal::class, 'proposal_id', 'id');
     }
 
-    public function nilaimagangs()
-    {
-        return $this->belongsTo(NilaiMagang::class);
-    }
-
     public function ajuanlogbooks()
     {
-        return $this->belongsTo(Logbook::class);
-    }
-
-    public function laporanakhirs()
-    {
-        return $this->hasOne(LaporanAkhir::class);
+        return $this->belongsTo(Logbook::class, 'logbook_id', 'id');
     }
 
     public function anggotas()
     {
-        return $this->belongsTo(Anggota::class, 'anggota_id', 'id');
+        return $this->belongsToMany(Anggota::class, 'kelompok', 'id_ajuan_magang', 'id_anggota');
     }
 
     public function instansis()
     {
         return $this->belongsTo(Instansi::class, 'instansi_id', 'id');
+    }
+
+    public function buktimagangs()
+    {
+        return $this->hasOne(BuktiMagang::class, 'id_ajuans', 'id');
+    }
+
+    public function logbooks()
+    {
+        return $this->hasMany(Logbook::class, 'logbook_id', 'id');
     }
 }
