@@ -145,37 +145,45 @@ class DataAjuanMahasiswaController extends Controller
     {
         $dataajuan = AjuanMagang::findOrFail($id);
 
-        $request->validate([
-            'verified' => 'required',
-        ]);
+       if (Auth::user()->role_id == 3) {
 
-        $dataajuan->update(['verified' => 'approve final']);
-        $dataajuan->update(['status' => 'siap download']);
 
-        Carbon::setLocale('id');
+            $request->validate([
+                'verified' => 'required',
+            ]);
 
-        $dataTemplate = [
-            'name' => $dataajuan->users->name,
-            'nim' => $dataajuan->users->nim,
-            'prodi' => $dataajuan->users->units->nama_prodi,
-            'nama_instansi' => $dataajuan->instansis->nama_instansi,
-            'alamat_surat' => $dataajuan->instansis->alamat_surat,
-            'alamat_instansi' => $dataajuan->instansis->alamat_instansi,
-            'judul_proposal' => $dataajuan->proposals->judul_proposal,
-            'dosen_pembimbing' => $dataajuan->dosen_pembimbing,
-            'tanggal_mulai' => Carbon::parse($dataajuan->tanggal_mulai)->translatedFormat('d F Y'),
-            'tanggal_selesai' => Carbon::parse($dataajuan->tanggal_selesai)->translatedFormat('d F Y'),
-        ];
+            $dataajuan->update(['verified' => 'approve']);
+            $dataajuan->update(['status' => 'siap download']);
 
-        $templatePath = public_path('tamplate.docx');
-        $templateProcessor = new TemplateProcessor($templatePath);
-        $templateProcessor->setValues($dataTemplate);
+            Carbon::setLocale('id');
 
-        $fileName = 'surat_pengantar_' . $dataajuan->users->name;
-        $outputPath = public_path($fileName . '.docx');
-        $templateProcessor->saveAs($outputPath);
+            $dataTemplate = [
+                'name' => $dataajuan->users->name,
+                'nim' => $dataajuan->users->nim,
+                'prodi' => $dataajuan->users->units->nama_prodi,
+                'nama_instansi' => $dataajuan->instansis->nama_instansi,
+                'alamat_surat' => $dataajuan->instansis->alamat_surat,
+                'alamat_instansi' => $dataajuan->instansis->alamat_instansi,
+                'judul_proposal' => $dataajuan->proposals->judul_proposal,
+                'dosen_pembimbing' => $dataajuan->dosen_pembimbing,
+                'tanggal_mulai' => Carbon::parse($dataajuan->tanggal_mulai)->translatedFormat('d F Y'),
+                'tanggal_selesai' => Carbon::parse($dataajuan->tanggal_selesai)->translatedFormat('d F Y'),
+            ];
 
-        return response()->download($outputPath)->deleteFileAfterSend(true);
+            $templatePath = public_path('tamplate.docx');
+            $templateProcessor = new TemplateProcessor($templatePath);
+            $templateProcessor->setValues($dataTemplate);
+
+            $fileName = 'surat_pengantar_' . $dataajuan->users->name;
+            $outputPath = public_path($fileName . '.docx');
+            $templateProcessor->saveAs($outputPath);
+
+            return response()->download($outputPath)->deleteFileAfterSend(true);
+       } else if (Auth::user()->role_id == 5) {
+            $dataajuan->update(['verified' => 'approve final']);
+
+            return redirect()->back()->with('success', 'Status pengajuan berhasil diperbarui.');
+       }
     }
 
     public function store(Request $request, $id)
