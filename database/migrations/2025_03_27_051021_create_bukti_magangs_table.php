@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->text('jawaban');
             $table->string('nama_file');
+            $table->foreignId('ajuan_id')->constrained('ajuan_magangs')->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamps();
 
         });

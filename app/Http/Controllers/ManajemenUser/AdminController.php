@@ -77,5 +77,71 @@ class AdminController extends Controller
 
         return redirect()->route('dataadmin.index')->with('toast_success', 'Status Berhasil Diubah');
     }
+
+    public function settings()
+    {
+        $users = Auth::user();
+        $activePage = 'settings';
+
+        if (Auth::user()->role_id == 1) {
+            return view('mahasiswa.layouts.settings', compact('users', 'activePage'));
+        }elseif (Auth::user()->role_id == 2) {
+            return view('Cdc.layouts.settings', compact('users', 'activePage'));
+        } elseif (Auth::user()->role_id == 3) {
+            return view('admin.layouts.settings', compact('users', 'activePage'));
+        } elseif (Auth::user()->role_id == 4) {
+            return view('dekanat.layouts.settings', compact('users', 'activePage'));
+        } elseif (Auth::user()->role_id == 5) {
+            return view('dosen.layouts.settings', compact('users', 'activePage'));
+        }
+
+        return redirect('dashboard')->with('error', 'Role tidak dikenali.');
+    }
+
+    public function settingsUpdate(Request $request)
+{
+    $user = User::all()->find(Auth::user()->id);
+    $requestData = $request->all();
+
+    // Validasi data sesuai dengan role pengguna
+    $validationRules = [
+        'name' => 'required|string|max:255',
+        'email' => 'required|string|email|max:255|unique:users,email,'.$user->id,
+        'no_wa' => 'required|string|max:20',
+        'password' => 'nullable|string|min:8|confirmed',
+    ];
+
+    // Sesuaikan validasi untuk NIP atau NIM berdasarkan role
+    if ($user->role_id == 1) {
+        $validationRules['nim'] = 'required|string|max:255|unique:users,nim,'.$user->id;
+    } else {
+        $validationRules['nip'] = 'required|string|max:255|unique:users,nip,'.$user->id;
+    }
+
+    // Validasi data jika diperlukan
+    $validatedData = $request->validate($validationRules);
+
+    // Update data pengguna berdasarkan role
+    if ($user->role_id == 1) {
+        $user->update([
+            'name' => $validatedData['name'],
+            'email' => $validatedData['email'],
+            'nim' => $validatedData['nim'],
+            'no_wa' => $validatedData['no_wa'],
+            'password' => isset($validatedData['password']) ? bcrypt($validatedData['password']) : $user->password,
+        ]);
+    } else {
+        $user->update([
+            'name' => $validatedData['name'],
+            'email' => $validatedData['email'],
+            'nip' => $validatedData['nip'],
+            'no_wa' => $validatedData['no_wa'],
+            'password' => isset($validatedData['password']) ? bcrypt($validatedData['password']) : $user->password,
+        ]);
+    }
+
+    return redirect()->back()->with('success', 'Profil berhasil diperbarui.');
+}
+
 }
 

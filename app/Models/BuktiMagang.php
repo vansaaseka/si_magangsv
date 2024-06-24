@@ -9,14 +9,16 @@ class BuktiMagang extends Model
 {
     use HasFactory;
 
+    protected $table = 'bukti_magangs';
     protected $fillable = [
         'jawaban',
         'nama_file',
+        'ajuan_id',
     ];
 
     public function ajuanmagangs()
     {
-        return $this->belongsTo(AjuanMagang::class, 'id_ajuans', 'id');
+        return $this->belongsTo(AjuanMagang::class, 'ajuan_id', 'id');
     }
 
 }

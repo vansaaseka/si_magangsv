@@ -79,7 +79,6 @@ class AjuanMagangController extends Controller
         $ajuan->instansi_id = $instansi->id;
         $ajuan->semester = $request->input('semester');
         $ajuan->tahun = $request->input('tahun');
-        $ajuan->bukti_magang_id = $request->input('bukti_magang_id');
         $ajuan->file_nilai = $request->input('file_nilai');
         $ajuan->tanggal_mulai = $request->input('tanggal_mulai');
         $ajuan->tanggal_selesai = $request->input('tanggal_selesai');

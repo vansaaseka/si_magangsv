@@ -19,6 +19,7 @@
                             <th>Status Ajuan</th>
                             <th>Nilai Akhir</th>
                             <th>Laporan Akhir</th>
+                            <th>Surat Selesai</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -60,7 +61,8 @@
                                         @if ($data->status === 'ajuan diterima')
                                             <button class="badge badge-primary border-0" data-toggle="modal"
                                                 data-id="{{ $data->id }}"
-                                                data-target="#ModalAjuanDiterima{{ $data->id }}">Ajuan Diterima</button>
+                                                data-target="#ModalAjuanDiterima{{ $data->id }}">Ajuan
+                                                Diterima</button>
                                         @elseif ($data->status === 'perbaikan proposal')
                                             <button class="badge badge-danger border-0 text-white bg-danger"
                                                 data-toggle="modal" data-id="{{ $data->id }}"
@@ -76,18 +78,57 @@
                                         @if (empty($data->file_nilai))
                                             <p>-</p>
                                         @else
-                                        <a href="{{ 'storage/nilaimagang/' . $data->file_nilai }}"
-                                            class="badge badge-secondary border-0" target="_blank">Lihat</a>
+                                            <a href="{{ 'storage/' . $data->file_nilai }}"
+                                                class="badge badge-secondary border-0" target="_blank">Lihat</a>
                                         @endif
                                     </td>
                                     <td>
                                         @if (empty($data->file_nilai))
                                             <p>-</p>
                                         @else
-                                        <a href="{{ 'storage/laporanakhir/' . $data->laporan_akhir }}"
-                                            class="badge badge-secondary border-0" target="_blank">Lihat</a>
+                                            <a href="{{ 'storage/' . $data->laporan_akhir }}"
+                                                class="badge badge-secondary border-0" target="_blank">Lihat</a>
                                         @endif
                                     </td>
+                                    <td>
+                                        @if ($data->verified == 'approve final')
+                                            <button class="btn btn-primary btn-sm" data-id="{{ $data->id }}"
+                                                data-toggle="modal"
+                                                data-target="#uploadSuratSelesai{{ $data->id }}">Upload</button>
+                                        @else
+                                            <p class="badge badge-primary">Tolong Approve final terlebih dahulu</p>
+                                        @endif
+                                    </td>
+                                    <div class="modal fade" id="uploadSuratSelesai{{ $data->id }}" tabindex="-1">
+                                        <div class="modal-dialog">
+                                            <form action="{{ route('suratTugas', $data->id) }}" method="POST"
+                                                enctype="multipart/form-data">
+                                                @csrf
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <div class="modal-title">
+                                                            <h5>Upload Surat Selesai Magang</h5>
+                                                        </div>
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="form-group">
+                                                            <label for="">File Surat Magang</label>
+                                                            <input type="file" name="surat_selesai" id="file"
+                                                                class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="submit"
+                                                            class="badge badge-primary border-0">Save</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
                                     <td>
                                         <button class="btn btn-primary btn-sm edit-btn" data-toggle="modal"
                                             data-target="#revisiModal{{ $data->id }}" data-id="{{ $data->id }}"><i
@@ -155,7 +196,8 @@
                                                                 <input type="radio" class="form-"
                                                                     id="perbaikanProposal{{ $data->id }}"
                                                                     name="status[]" value="perbaikan proposal">
-                                                                <label for="perbaikanProposal{{ $data->id }}">Perbaikan
+                                                                <label
+                                                                    for="perbaikanProposal{{ $data->id }}">Perbaikan
                                                                     Proposal</label>
                                                             </div>
                                                             <div class="form-group">

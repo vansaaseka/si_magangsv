@@ -9,6 +9,8 @@ class AjuanMagang extends Model
 {
     use HasFactory;
 
+    protected $table = 'ajuan_magangs';
+
     protected $fillable = [
         'user_id',
         'tahun_ajaran_semester_id',
@@ -29,6 +31,7 @@ class AjuanMagang extends Model
         'jenis_kegiatan',
         'dosen_pembimbing',
         'verified',
+        'surat_selesai'
     ];
 
     public function users()
@@ -63,7 +66,7 @@ class AjuanMagang extends Model
 
     public function buktimagangs()
     {
-        return $this->hasOne(BuktiMagang::class, 'id_ajuans', 'id');
+        return $this->hasOne(BuktiMagang::class, 'ajuan_id', 'id');
     }
 
     public function logbooks()

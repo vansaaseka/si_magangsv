@@ -41,7 +41,7 @@ class DataAjuanMahasiswaController extends Controller
             return view('dekanat.datapengajuan', compact('dataajuan', 'activePage'));
         } elseif (Auth::user()->role_id == 5) {
             // Dosen melihat ajuan magang yang terkait dengan mereka
-            $dataajuan = AjuanMagang::where('dosen_pembimbing', $users->name)->get();
+            $dataajuan = AjuanMagang::where('dosen_pembimbing', Auth::user()->id)->get();
             $activePage = 'pengajuan';
 
             return view('dosen.datapengajuan', compact('dataajuan', 'activePage'));
@@ -122,6 +122,22 @@ class DataAjuanMahasiswaController extends Controller
             $dataajuan->update(['status' => 'siap download']);
 
             return redirect()->back()->with('success', 'Status pengajuan berhasil diperbarui.');
+        } else if (Auth::user()->role_id == '5') {
+            $dataajuan = AjuanMagang::findOrFail($id);
+
+            $request->validate([
+                'status' => 'required|array',
+            ]);
+
+            $status = $request->input('status');
+
+            if (in_array('selesai magang', $status)) {
+                $dataajuan->update(['status' => 'selesai magang']);
+            }
+
+            $dataajuan->save();
+
+            return redirect()->back()->with('success', 'Status pengajuan berhasil diperbarui.');
         }
     }
 
@@ -133,7 +149,8 @@ class DataAjuanMahasiswaController extends Controller
             'verified' => 'required',
         ]);
 
-        $dataajuan->update(['verified' => 'approve']);
+        $dataajuan->update(['verified' => 'approve final']);
+        $dataajuan->update(['status' => 'siap download']);
 
         Carbon::setLocale('id');
 
@@ -222,7 +239,6 @@ class DataAjuanMahasiswaController extends Controller
                 $proposal->save();
             });
 
-            return redirect()->back()->with('success', 'Surat Pengantar dan Proposal berhasil diupload!');
             return redirect()->back()->with('success', 'Data berhasil diupdate.');
         }
 

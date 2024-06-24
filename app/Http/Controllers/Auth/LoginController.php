@@ -56,7 +56,11 @@ class LoginController extends Controller
                     return redirect()->route('dashboard');
                 }
                 if ($user->role_id == 5) {
+                   if ($user->nip != null && $user->no_wa != null) {
                     return redirect()->route('editprofile');
+                   }
+                   return redirect()->route('dashboard');
+
                 }
                 // Tambahkan logika tambahan jika diperlukan untuk peran lain
             } else {

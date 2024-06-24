@@ -53,7 +53,7 @@ class BuktiDokumenController extends Controller
                     $bukti->nama_file = $filename;
                 }
 
-                $bukti->id_ajuans = $id;
+                $bukti->ajuan_id = $id;
                 $bukti->jawaban = $request->input('jawaban');
                 // $bukti->user_id = Auth::id();
                 $bukti->save();

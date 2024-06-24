@@ -51,6 +51,10 @@ Route::middleware(['guest'])->group(function () {
 //mahasiswa
 Route::middleware(['auth'])->group(function () {
 
+    Route::get('/settings', [AdminController::class, 'settings'])->name('settings');
+    Route::put('/settingsUpdate', [AdminController::class, 'settingsUpdate'])->name('settingsUpdate');
+
+
     Route::prefix('/')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
         Route::get('/pengajuanmagang', [AjuanMagangController::class, 'index'])->name('pengajuanmahasiswa');
@@ -136,4 +140,10 @@ Route::middleware(['auth'])->group(function () {
     //Profile
     Route::get('/profile/edit', [ProfileController::class, 'profileDosen'])->name('editprofile');
     Route::post('/profile/update', [ProfileController::class, 'insertProfile'])->name('profileUpdate');
+
+    // Update Nilai Magang
+    Route::post('/updateNilai/{id}', [SelesaiMagangController::class, 'updateNilai'])->name('updateNilai');
+    Route::post('/updateLaporanAkhir/{id}', [SelesaiMagangController::class, 'updateLaporanAkhir'])->name('updateLaporanAkhir');
+
+    Route::post('/suratTugas/{id}', [SelesaiMagangController::class, 'suratTugas'])->name('suratTugas');
 });

@@ -15,6 +15,7 @@
                             <th>Proposal</th>
                             <th>Surat Tugas</th>
                             <th>Nilai & Laporan Akhir</th>
+                            <th>Surat Selesai</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -74,6 +75,14 @@
                                             data-target="#UploadFileModal{{ $data->id }}"
                                             data-id="{{ $data->id }}">Upload
                                         </button>
+                                    </td>
+                                    <td>
+                                        @if (empty($data->surat_selesai))
+                                            <p>-</p>
+                                        @else
+                                            <a href="{{ 'storage/' . $data->surat_selesai }}"
+                                                class="badge badge-info border-0" target="_blank">Surat Selesai</a>
+                                        @endif
                                     </td>
                                     <td>
                                         @if ($data->status === 'perbaikan proposal')

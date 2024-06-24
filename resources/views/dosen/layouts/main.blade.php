@@ -50,11 +50,11 @@
                     <li class="nav-item nav-profile dropdown">
                         <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
                             <img src="{{ asset('assets/admin-dashboard/images/faces/user.jpg') }}" alt="profile" />
-                            <span class="nav-profile-text">{{ Auth::user()->name }}</span> 
+                            <span class="nav-profile-text">{{ Auth::user()->name }}</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right navbar-dropdown"
                             aria-labelledby="profileDropdown">
-                            <a class="dropdown-item">
+                            <a class="dropdown-item" href="{{ route('settings') }}">
                                 <i class="ti-settings text-primary"></i>
                                 Settings
                             </a>
@@ -100,8 +100,8 @@
                 <i class="settings-close ti-close"></i>
                 <ul class="nav nav-tabs border-top" id="setting-panel" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" id="todo-tab" data-toggle="tab" href="#todo-section"
-                            role="tab" aria-controls="todo-section" aria-expanded="true">TO DO LIST</a>
+                        <a class="nav-link active" id="todo-tab" data-toggle="tab" href="#todo-section" role="tab"
+                            aria-controls="todo-section" aria-expanded="true">TO DO LIST</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="chats-tab" data-toggle="tab" href="#chats-section" role="tab"

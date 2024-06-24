@@ -29,7 +29,7 @@
                                 <td colspan="6" class="text-center">Data kosong</td>
                             </tr>
                         @else
-                        @php $no = 1; @endphp
+                            @php $no = 1; @endphp
                             @foreach ($dataajuan as $data)
                                 <tr>
                                     <td>{{ $no++ }}</td>
@@ -61,7 +61,8 @@
                                         @if ($data->status === 'ajuan diterima')
                                             <button class="badge badge-primary border-0" data-toggle="modal"
                                                 data-id="{{ $data->id }}"
-                                                data-target="#ModalAjuanDiterima{{ $data->id }}">Ajuan Diterima</button>
+                                                data-target="#ModalAjuanDiterima{{ $data->id }}">Ajuan
+                                                Diterima</button>
                                         @elseif ($data->status === 'perbaikan proposal')
 
                                         @elseif ($data->status === 'proses validasi')
@@ -350,4 +351,3 @@
         @endif
     </script>
 @endpush
-
