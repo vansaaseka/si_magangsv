@@ -250,6 +250,48 @@
                                                                 class="btn btn-primary btn-sm float-end">Submit</button>
                                                         </form>
                                                     </div>
+                                                    <!-- Upload Modal -->
+                                                    <div class="modal fade" id="UploadFileModal{{ $data->id }}"
+                                                        tabindex="-1" role="dialog"
+                                                        aria-labelledby="uploadModalLabel{{ $data->id }}"
+                                                        aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title"
+                                                                        id="uploadModalLabel{{ $data->id }}">Upload
+                                                                        Nilai & Laporan Akhir Magang
+                                                                    </h5>
+                                                                    <button type="button" class="close"
+                                                                        data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <form id="uploadForm{{ $data->id }}"
+                                                                        action="{{ route('datapengajuan.upload', ['id' => $data->id]) }}"
+                                                                        method="POST" enctype="multipart/form-data">
+                                                                        @csrf
+                                                                        @method('PUT')
+                                                                        <div class="form-group">
+                                                                            <label for="file_nilai">Nilai Magang</label>
+                                                                            <input type="file" class="form-control"
+                                                                                name="file_nilai" accept=".pdf" required>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label for="laporan_akhir">Laporan Akhir
+                                                                                Magang</label>
+                                                                            <input type="file" class="form-control"
+                                                                                name="laporan_akhir" accept=".pdf"
+                                                                                required>
+                                                                        </div>
+                                                                        <button type="submit"
+                                                                            class="btn btn-primary btn-sm float-end">Submit</button>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                     </td>
@@ -261,38 +303,7 @@
             </div>
         </div>
     </div>
-    <!-- Upload Modal -->
-    <div class="modal fade" id="UploadFileModal{{ $data->id }}" tabindex="-1" role="dialog"
-        aria-labelledby="uploadModalLabel{{ $data->id }}" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="uploadModalLabel{{ $data->id }}">Upload Nilai & Laporan Akhir Magang
-                    </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="uploadForm{{ $data->id }}"
-                        action="{{ route('datapengajuan.upload', ['id' => $data->id]) }}" method="POST"
-                        enctype="multipart/form-data">
-                        @csrf
-                        @method('PUT')
-                        <div class="form-group">
-                            <label for="file_nilai">Nilai Magang</label>
-                            <input type="file" class="form-control" name="file_nilai" accept=".pdf" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="laporan_akhir">Laporan Akhir Magang</label>
-                            <input type="file" class="form-control" name="laporan_akhir" accept=".pdf" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-sm float-end">Submit</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+
 
 @endsection
 
