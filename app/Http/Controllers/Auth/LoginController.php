@@ -22,10 +22,8 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-        // Ambil hanya email dan password dari request
         $credentials = $request->only('email', 'password');
 
-        // Validasi input
         $validator = Validator::make($credentials, [
             'email' => 'required|email',
             'password' => 'required',
@@ -35,34 +33,34 @@ class LoginController extends Controller
             return redirect()->route('login')->withErrors($validator)->withInput();
         }
 
-        // Cari pengguna berdasarkan email
         $user = User::where('email', $credentials['email'])->first();
+        $users = User::all()->first();
 
-        // Periksa apakah pengguna ditemukan dan statusnya adalah 1
         if ($user && $user->status == 1) {
             // Coba autentikasi pengguna
             if (Auth::attempt($credentials)) {
-                // Jika autentikasi berhasil dan role_id adalah 1 (mahasiswa)
                 if ($user->role_id == 1) {
-                    return redirect()->route('dashboard');
+                    if (is_null($user->nim) || is_null($user->no_wa)) {
+                        return view('mahasiswa.layouts.settings', compact('users'));
+                    }
+                } elseif ($user->role_id == 2) {
+                    if (is_null($user->nip) || is_null($user->no_wa)) {
+                        return view('Cdc.layouts.settings', compact('users'));
+                    }
+                } elseif ($user->role_id == 3) {
+                    if (is_null($user->nip) || is_null($user->no_wa)) {
+                        return view('admin.layouts.settings', compact('users'));
+                    }
+                } elseif ($user->role_id == 4) {
+                    if (is_null($user->nip) || is_null($user->no_wa)) {
+                        return view('dekanat.layouts.settings', compact('users'));
+                    }
+                } elseif ($user->role_id == 5) {
+                    if (is_null($user->nip) || is_null($user->no_wa)) {
+                        return redirect()->route('editprofile');
+                    }
                 }
-                if ($user->role_id == 2) {
-                    return redirect()->route('dashboard');
-                }
-                if ($user->role_id == 3) {
-                    return redirect()->route('dashboard');
-                }
-                if ($user->role_id == 4) {
-                    return redirect()->route('dashboard');
-                }
-                if ($user->role_id == 5) {
-                   if ($user->nip != null && $user->no_wa != null) {
-                    return redirect()->route('editprofile');
-                   }
-                   return redirect()->route('dashboard');
-
-                }
-                // Tambahkan logika tambahan jika diperlukan untuk peran lain
+                return redirect()->route('dashboard');
             } else {
                 return redirect()->route('login')->with('error', 'Email atau password salah.');
             }
@@ -70,6 +68,7 @@ class LoginController extends Controller
             return redirect()->route('login')->with('error', 'Akun tidak aktif atau tidak ditemukan.');
         }
     }
+
 
     public function logout(Request $request)
     {

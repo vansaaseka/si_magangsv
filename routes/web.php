@@ -127,6 +127,7 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/delete/{id}', [DataAjuanMahasiswaController::class, 'delete'])->name('delete');
         Route::put('/upload/{id}', [DataAjuanMahasiswaController::class, 'upload'])->name('upload');
     });
+
     Route::get('/success', [AjuanMagangController::class, 'success'])->name('viewsuccess');
 
     //Dokumen
