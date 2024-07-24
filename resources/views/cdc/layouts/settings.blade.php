@@ -1,4 +1,4 @@
-@extends('Cdc.layouts.main')
+@extends('cdc.layouts.main')
 
 
 @section('content')

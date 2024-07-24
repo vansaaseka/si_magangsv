@@ -80,7 +80,7 @@
                                         @elseif ($data->status === 'siap download')
                                             <span class="badge badge-success text-light">Siap Download</span>
                                         @elseif ($data->status === 'selesai magang')
-                                            <span class="badge badge-info text-light">Magang Selesai</span>
+                                            <span class="badge badge-primary text-light">Magang Selesai</span>
                                         @endif
                                     </td>
                                     <td>

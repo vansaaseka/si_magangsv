@@ -39,21 +39,22 @@ class LoginController extends Controller
         if ($user && $user->status == 1) {
             // Coba autentikasi pengguna
             if (Auth::attempt($credentials)) {
+                $activePage = 'settings';
                 if ($user->role_id == 1) {
                     if (is_null($user->nim) || is_null($user->no_wa)) {
-                        return view('mahasiswa.layouts.settings', compact('users'));
+                        return view('mahasiswa.dashboard', compact('users', 'activePage'));
                     }
                 } elseif ($user->role_id == 2) {
                     if (is_null($user->nip) || is_null($user->no_wa)) {
-                        return view('Cdc.layouts.settings', compact('users'));
+                        return view('Cdc.layouts.settings', compact('users', 'activePage'));
                     }
                 } elseif ($user->role_id == 3) {
                     if (is_null($user->nip) || is_null($user->no_wa)) {
-                        return view('admin.layouts.settings', compact('users'));
+                        return view('admin.layouts.settings', compact('users', 'activePage'));
                     }
                 } elseif ($user->role_id == 4) {
                     if (is_null($user->nip) || is_null($user->no_wa)) {
-                        return view('dekanat.layouts.settings', compact('users'));
+                        return view('dekanat.layouts.settings', compact('users', 'activePage'));
                     }
                 } elseif ($user->role_id == 5) {
                     if (is_null($user->nip) || is_null($user->no_wa)) {

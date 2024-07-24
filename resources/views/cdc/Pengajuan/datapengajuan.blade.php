@@ -72,13 +72,15 @@
                                                 SV</button>
                                         @elseif ($data->status === 'siap download')
                                             <button class="badge badge-success border-0 text-light">Siap Download</button>
+                                            @elseif ($data->status === 'selesai magang')
+                                            <span class="badge badge-primary text-light">Magang Selesai</span>
                                         @endif
                                     </td>
                                     <td>
                                         @if (empty($data->file_nilai))
                                             <p>-</p>
                                         @else
-                                            <a href="{{ 'storage/' . $data->file_nilai }}"
+                                            <a href="{{ 'storage/nilaimagang' . $data->file_nilai }}"
                                                 class="badge badge-secondary border-0" target="_blank">Lihat</a>
                                         @endif
                                     </td>
@@ -86,7 +88,7 @@
                                         @if (empty($data->file_nilai))
                                             <p>-</p>
                                         @else
-                                            <a href="{{ 'storage/' . $data->laporan_akhir }}"
+                                            <a href="{{ 'storage/laporanakhir' . $data->laporan_akhir }}"
                                                 class="badge badge-secondary border-0" target="_blank">Lihat</a>
                                         @endif
                                     </td>

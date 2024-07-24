@@ -20,9 +20,4 @@ class Anggota extends Model
         return $this->belongsToMany(Ajuanmagang::class, 'kelompok', 'id_anggota', 'id_ajuan_magang');
     }
 
-    public function logbooks()
-    {
-        return $this->belongsToMany(Logbook::class, 'ajuan_logbook', 'id_anggota', 'id_logbook');
-    }
-
 }

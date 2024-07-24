@@ -49,11 +49,6 @@ class AjuanMagang extends Model
         return $this->belongsTo(Proposal::class, 'proposal_id', 'id');
     }
 
-    public function ajuanlogbooks()
-    {
-        return $this->belongsTo(Logbook::class, 'logbook_id', 'id');
-    }
-
     public function anggotas()
     {
         return $this->belongsToMany(Anggota::class, 'kelompok', 'id_ajuan_magang', 'id_anggota');
@@ -69,8 +64,4 @@ class AjuanMagang extends Model
         return $this->hasOne(BuktiMagang::class, 'ajuan_id', 'id');
     }
 
-    public function logbooks()
-    {
-        return $this->hasMany(Logbook::class, 'logbook_id', 'id');
-    }
 }
